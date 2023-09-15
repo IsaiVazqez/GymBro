@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gymbro/features/home_screen/presentation/views/home_screen.dart';
+import 'package:gymbro/features/login_screen/presentation/views/login_screen.dart';
 import 'package:gymbro/features/splash_screen/bloc/splash_bloc.dart';
 import 'package:gymbro/features/splash_screen/bloc/splash_event.dart';
 
@@ -16,7 +16,7 @@ class SplashScreen extends StatelessWidget {
         listener: (context, state) {
           if (state is SplashLoaded) {
             Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => const HomeScreen()),
+              MaterialPageRoute(builder: (context) => const LoginScreen()),
               (Route<dynamic> route) => false,
             );
           }
