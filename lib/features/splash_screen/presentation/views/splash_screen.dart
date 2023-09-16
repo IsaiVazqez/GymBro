@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gymbro/features/login_screen/presentation/views/login_screen.dart';
@@ -15,10 +16,16 @@ class SplashScreen extends StatelessWidget {
       child: BlocListener<SplashBloc, SplashState>(
         listener: (context, state) {
           if (state is SplashLoaded) {
-            Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => const LoginScreen()),
-              (Route<dynamic> route) => false,
-            );
+            Navigator.of(context).pushReplacement(PageRouteBuilder(
+                pageBuilder: (context, animation, secondaryAnimation) =>
+                    const LoginScreen(),
+                transitionsBuilder:
+                    (context, animation, secondaryAnimation, child) {
+                  return FadeTransition(
+                    opacity: animation,
+                    child: child,
+                  );
+                }));
           }
         },
         child: Scaffold(body: BlocBuilder<SplashBloc, SplashState>(
@@ -27,18 +34,17 @@ class SplashScreen extends StatelessWidget {
             switch (state.runtimeType) {
               case SplashInitial:
                 body = Center(
-                  child: SizedBox(
-                    width: size.width * .55, // ajusta el ancho como desees
-                    height: size.height * .29, // ajusta la altura como desees
-                    child: Image.asset('assets/logo.png', fit: BoxFit.cover),
+                  child: FadeIn(
+                    child: SizedBox(
+                      width: size.width * .55, // ajusta el ancho como desees
+                      height: size.height * .29, // ajusta la altura como desees
+                      child: Image.asset('assets/logo.png', fit: BoxFit.cover),
+                    ),
                   ),
                 );
 
                 break;
-              case SplashLoaded:
-                body = const Center(
-                    child: Text('Carga completa, redirigiendo...'));
-                break;
+
               default:
                 body = const Center(child: Text('Algo salió mal'));
             }

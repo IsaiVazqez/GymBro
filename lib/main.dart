@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gymbro/features/home_screen/presentation/views/home_screen.dart';
 import 'package:gymbro/features/login_screen/presentation/views/login_screen.dart';
 import 'package:gymbro/features/splash_screen/bloc/splash_bloc.dart';
 import 'package:gymbro/features/splash_screen/presentation/views/splash_screen.dart';
@@ -17,6 +16,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'GymBro',
+      theme: ThemeData(
+        useMaterial3: true,
+      ),
       home: BlocProvider(
         create: (context) => SplashBloc(),
         child: BlocBuilder<SplashBloc, SplashState>(
