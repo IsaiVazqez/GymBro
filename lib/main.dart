@@ -12,24 +12,24 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'GymBro',
-      theme: ThemeData(
-        useMaterial3: true,
-      ),
-      home: MultiBlocProvider(
-        providers: [
-          BlocProvider<SplashBloc>(
-            create: (context) => SplashBloc(),
-          ),
-          BlocProvider<LoginBloc>(
-            create: (context) => LoginBloc(),
-          ),
-          // Si tienes más BLoCs, simplemente añádelos aquí...
-        ],
-        child: BlocBuilder<SplashBloc, SplashState>(
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<LoginBloc>(
+          create: (context) => LoginBloc(),
+        ),
+        BlocProvider<SplashBloc>(
+          create: (context) => SplashBloc(),
+        ),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'GymBro',
+        theme: ThemeData(
+          useMaterial3: true,
+        ),
+        home: BlocBuilder<SplashBloc, SplashState>(
           builder: (context, state) {
             if (state is SplashLoaded) {
               return const LoginScreen();

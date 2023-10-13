@@ -6,3 +6,5 @@ abstract class LoginState {}
 class InitialState extends LoginState {}
 
 class ShowFieldsState extends LoginState {}
+
+class ShowRegisterFieldsState extends LoginState {}

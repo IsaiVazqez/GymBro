@@ -1,12 +1,13 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:gymbro/common/constants/colors.dart';
 
 class HexagonPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final Paint paint = Paint()
-      ..color = Colors.black // color transparente
+      ..color = AppColors.background
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.4;
 
