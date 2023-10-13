@@ -5,6 +5,6 @@ class ActivitiesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text('Actividades'));
+    return Center(child: const Text('Actividades'));
   }
 }
