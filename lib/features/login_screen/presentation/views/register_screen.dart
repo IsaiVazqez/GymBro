@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gymbro/common/constants/colors.dart';
+import 'package:intl/intl.dart';
 
 class RegisterScreen extends StatelessWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -7,7 +8,7 @@ class RegisterScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: AppColors.background, // <- Color de fondo
+      backgroundColor: AppColors.background,
       appBar: AppBar(
         backgroundColor: AppColors.background,
         leading: IconButton(
@@ -31,7 +32,9 @@ class RegisterScreen extends StatelessWidget {
 class _RegisterCard extends StatelessWidget {
   final Size size;
 
-  const _RegisterCard({required this.size});
+  _RegisterCard({required this.size});
+
+  final TextEditingController _dateController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -52,73 +55,91 @@ class _RegisterCard extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     color: Colors.black87)),
             const SizedBox(height: 20),
-            TextField(
-              style: const TextStyle(color: Colors.white),
+            const TextField(
+              style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
                 fillColor: AppColors.background,
                 filled: true,
                 labelText: "Nombre completo",
-                labelStyle: const TextStyle(color: Colors.white),
+                labelStyle: TextStyle(color: Colors.white),
                 border: OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 20),
-            TextField(
-              style: const TextStyle(color: Colors.white),
+            const TextField(
+              style: TextStyle(color: Colors.white),
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
                 fillColor: AppColors.background,
                 filled: true,
                 labelText: "Correo electrónico",
-                labelStyle: const TextStyle(color: Colors.white),
+                labelStyle: TextStyle(color: Colors.white),
                 border: OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 20),
-            TextField(
-              style: const TextStyle(color: Colors.white),
+            const TextField(
+              style: TextStyle(color: Colors.white),
               keyboardType: TextInputType.phone,
               decoration: InputDecoration(
                 fillColor: AppColors.background,
                 filled: true,
                 labelText: "Número telefónico",
-                labelStyle: const TextStyle(color: Colors.white),
+                labelStyle: TextStyle(color: Colors.white),
                 border: OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 20),
             TextField(
+              readOnly:
+                  true, // El usuario no puede ingresar la fecha manualmente
+              controller: _dateController,
               style: const TextStyle(color: Colors.white),
-              keyboardType: TextInputType.datetime,
               decoration: InputDecoration(
                 fillColor: AppColors.background,
                 filled: true,
                 labelText: "Fecha de nacimiento",
                 labelStyle: const TextStyle(color: Colors.white),
-                border: OutlineInputBorder(),
+                border: const OutlineInputBorder(),
+                suffixIcon: IconButton(
+                  icon: const Icon(Icons.calendar_today, color: Colors.white),
+                  onPressed: () async {
+                    DateTime? selectedDate = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(1900),
+                      lastDate: DateTime.now(),
+                    );
+
+                    if (selectedDate != null) {
+                      _dateController.text =
+                          DateFormat('dd/MM/yyyy').format(selectedDate);
+                    }
+                  },
+                ),
               ),
             ),
             const SizedBox(height: 20),
-            TextField(
+            const TextField(
               obscureText: true,
-              style: const TextStyle(color: Colors.white),
+              style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
                 fillColor: AppColors.background,
                 filled: true,
                 labelText: "Contraseña",
-                labelStyle: const TextStyle(color: Colors.white),
+                labelStyle: TextStyle(color: Colors.white),
                 border: OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 20),
-            TextField(
+            const TextField(
               obscureText: true,
-              style: const TextStyle(color: Colors.white),
+              style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
                 fillColor: AppColors.background,
                 filled: true,
                 labelText: "Confirmar contraseña",
-                labelStyle: const TextStyle(color: Colors.white),
+                labelStyle: TextStyle(color: Colors.white),
                 border: OutlineInputBorder(),
               ),
             ),
@@ -141,27 +162,6 @@ class _RegisterCard extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-
-  Widget _customTextField(String label,
-      {bool obscureText = false, TextInputType? keyboardType}) {
-    return TextFormField(
-      decoration: InputDecoration(
-        labelText: label,
-        labelStyle: const TextStyle(color: Colors.white),
-        fillColor: AppColors.background,
-        filled: true,
-        focusedBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: AppColors.background, width: 1.0),
-        ),
-        enabledBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: AppColors.background, width: 1.0),
-        ),
-      ),
-      keyboardType: keyboardType,
-      obscureText: obscureText,
-      style: const TextStyle(color: Colors.white),
     );
   }
 }

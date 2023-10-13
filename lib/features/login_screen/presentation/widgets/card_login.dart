@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gymbro/common/constants/colors.dart';
+import 'package:gymbro/features/home_screen/presentation/views/home_screen.dart';
 import 'package:gymbro/features/login_screen/bloc/bloc/login_bloc.dart';
 import 'package:gymbro/features/login_screen/presentation/views/register_screen.dart';
 
@@ -134,13 +135,12 @@ class CardLogin extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(
-                  width: size.width * 0.15, // Establece la anchura que deseas
-                  height: size.height * 0.06, // Establece la altura que deseas
+                  width: size.width * 0.15,
+                  height: size.height * 0.06,
                   child: ElevatedButton(
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets
-                          .zero, // Poner a cero para usar el tamaño del Container
+                      padding: EdgeInsets.zero,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
@@ -258,7 +258,12 @@ class _LoginFields extends StatelessWidget {
                         ),
                         backgroundColor: MaterialStateProperty.all<Color>(
                             AppColors.darkGraySoft)),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                            builder: (context) => const HomeScreen()),
+                      );
+                    },
                     child: const Text('Ingresar')),
               ],
             ),
