@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gymbro/common/constants/colors.dart';
+import 'package:gymbro/common/constants/validators.dart';
 import 'package:gymbro/features/home_screen/presentation/views/home_screen.dart';
 import 'package:gymbro/features/login_screen/bloc/bloc/login_bloc.dart';
 import 'package:gymbro/features/login_screen/presentation/views/register_screen.dart';
+import 'package:gymbro/features/login_screen/presentation/widgets/text_field.dart';
 
 class CardLogin extends StatelessWidget {
   const CardLogin({
@@ -109,7 +111,7 @@ class CardLogin extends StatelessWidget {
                           builder: (context) => const RegisterScreen()),
                     );
                   },
-                  child: const Text('Register'),
+                  child: const Text('Registrate'),
                 )),
             SizedBox(
               height: size.height * 0.02,
@@ -119,7 +121,7 @@ class CardLogin extends StatelessWidget {
                 Expanded(child: Divider(color: Colors.grey)),
                 SizedBox(width: 10), // Espacio entre la línea y el texto
                 Text(
-                  'Utiliza redes sociales',
+                  '¿No tienes cuenta?',
                   style: TextStyle(
                     color: Colors.white,
                   ),
@@ -129,52 +131,67 @@ class CardLogin extends StatelessWidget {
               ],
             ),
             SizedBox(
-              height: size.height * 0.03,
+              height: size.height * 0.04,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: size.width * 0.15,
-                  height: size.height * 0.06,
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.zero,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      backgroundColor: Colors.blue,
-                    ),
-                    child: const Icon(
-                      Icons.facebook,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
+            SizedBox(
+                height: size.height * 0.05,
+                width: size.width * 0.8,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary500,
+                      foregroundColor: AppColors.background),
+                  onPressed: () {
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                          builder: (context) => const HomeScreen()),
+                    );
+                  },
+                  child: const Text('Ingresa como invitado'),
+                )),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.center,
+            //   children: [
+            //     SizedBox(
+            //       width: size.width * 0.15,
+            //       height: size.height * 0.06,
+            //       child: ElevatedButton(
+            //         onPressed: () {},
+            //         style: ElevatedButton.styleFrom(
+            //           padding: EdgeInsets.zero,
+            //           shape: RoundedRectangleBorder(
+            //             borderRadius: BorderRadius.circular(8),
+            //           ),
+            //           backgroundColor: Colors.blue,
+            //         ),
+            //         child: const Icon(
+            //           Icons.facebook,
+            //           color: Colors.white,
+            //         ),
+            //       ),
+            //     ),
 
-                SizedBox(width: size.width * .1), // Espacio entre botones
-                SizedBox(
-                  width: size.width * 0.15, // Establece la anchura que deseas
-                  height: size.height * 0.06, // Establece la altura que deseas
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets
-                          .zero, // Poner a cero para usar el tamaño del Container
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      backgroundColor: Colors.red,
-                    ),
-                    child: const Icon(
-                      Icons.mail,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            //     SizedBox(width: size.width * .1), // Espacio entre botones
+            //     SizedBox(
+            //       width: size.width * 0.15, // Establece la anchura que deseas
+            //       height: size.height * 0.06, // Establece la altura que deseas
+            //       child: ElevatedButton(
+            //         onPressed: () {},
+            //         style: ElevatedButton.styleFrom(
+            //           padding: EdgeInsets
+            //               .zero, // Poner a cero para usar el tamaño del Container
+            //           shape: RoundedRectangleBorder(
+            //             borderRadius: BorderRadius.circular(8),
+            //           ),
+            //           backgroundColor: Colors.red,
+            //         ),
+            //         child: const Icon(
+            //           Icons.mail,
+            //           color: Colors.white,
+            //         ),
+            //       ),
+            //     ),
+            //   ],
+            // ),
             Expanded(
               child: state is ShowFieldsState
                   ? _LoginFields(size: size)
@@ -189,85 +206,82 @@ class CardLogin extends StatelessWidget {
 
 class _LoginFields extends StatelessWidget {
   final Size size;
+  _LoginFields({required this.size});
 
-  const _LoginFields({required this.size});
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: size.height * 0.43,
-      decoration: BoxDecoration(
-        color: AppColors.background,
-        borderRadius: BorderRadius.circular(14),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 1,
-            blurRadius: 8,
-            offset: const Offset(0, 3),
-          ),
-        ],
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(17.0),
-        child: Column(
-          children: [
-            SizedBox(height: size.height * 0.02),
-            const TextField(
-              style: TextStyle(color: Colors.white),
-              decoration: InputDecoration(
-                labelStyle: TextStyle(color: Colors.white),
-                hintStyle: TextStyle(color: Colors.white),
-                labelText: 'Correo electrónico',
-                floatingLabelBehavior: FloatingLabelBehavior.auto,
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 16.0),
-            const TextField(
-              obscureText: true,
-              style: TextStyle(color: Colors.white),
-              decoration: InputDecoration(
-                labelStyle: TextStyle(color: Colors.white),
-                hintStyle: TextStyle(color: Colors.white),
-                labelText: 'Contraseña',
-                floatingLabelBehavior: FloatingLabelBehavior.auto,
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 16.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    context.read<LoginBloc>().add(ShowDefaultViewEvent());
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary500,
-                    foregroundColor: AppColors.background, // foreground
-                  ),
-                  child: const Text('Regresar'),
-                ),
-                ElevatedButton(
-                    style: ButtonStyle(
-                        foregroundColor: MaterialStateColor.resolveWith(
-                            (states) => Colors.white),
-                        textStyle: MaterialStateProperty.all<TextStyle>(
-                          const TextStyle(fontSize: 15),
-                        ),
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                            AppColors.darkGraySoft)),
-                    onPressed: () {
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                            builder: (context) => const HomeScreen()),
-                      );
-                    },
-                    child: const Text('Ingresar')),
-              ],
+    return Form(
+      key: _formKey,
+      child: Container(
+        height: size.height * 0.43,
+        decoration: BoxDecoration(
+          color: AppColors.background,
+          borderRadius: BorderRadius.circular(14),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 1,
+              blurRadius: 8,
+              offset: const Offset(0, 3),
             ),
           ],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(17.0),
+          child: Column(
+            children: [
+              SizedBox(height: size.height * 0.02),
+              CustomTextField(
+                controller: _emailController,
+                labelText: "Correo electrónico",
+                keyboardType: TextInputType.emailAddress,
+                validator: Validators.validateEmail,
+              ),
+              const SizedBox(height: 16.0),
+              CustomTextField(
+                controller: _passwordController,
+                labelText: "Contraseña",
+                obscureText: true,
+                validator: Validators.validatePassword,
+              ),
+              const SizedBox(height: 16.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      context.read<LoginBloc>().add(ShowDefaultViewEvent());
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary500,
+                      foregroundColor: AppColors.background, // foreground
+                    ),
+                    child: const Text('Regresar'),
+                  ),
+                  ElevatedButton(
+                      style: ButtonStyle(
+                          foregroundColor: MaterialStateColor.resolveWith(
+                              (states) => Colors.white),
+                          textStyle: MaterialStateProperty.all<TextStyle>(
+                            const TextStyle(fontSize: 15),
+                          ),
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              AppColors.darkGraySoft)),
+                      onPressed: () {
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                              builder: (context) => const HomeScreen()),
+                        );
+                      },
+                      child: const Text('Ingresar')),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
