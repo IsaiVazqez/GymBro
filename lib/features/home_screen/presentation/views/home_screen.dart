@@ -1,98 +1,129 @@
 import 'package:flutter/material.dart';
 import 'package:gymbro/common/constants/colors.dart';
 import 'package:gymbro/common/models/gym_model.dart';
+import 'package:gymbro/common/widgets/app_bar/presentation/custom_appbar.dart';
 import 'package:gymbro/features/home_screen/presentation/widgets/gym_cards.dart';
 
 final List<Map<String, dynamic>> gymData = [
   {
-    "id": "1",
-    "Nombre": "Gym 1",
-    "Imagen": "https://loremflickr.com/320/240",
-    "Dirección": "Calle 30 por 103 y 10"
+    "Id": "1",
+    "Nombre": "Gym A",
+    "Calificacion": "5.0",
+    "Direccion": "Calle 59 por 103 y 40 Altabrisa",
+    "Descripcion":
+        "Este gimnasio provee mucha informacion al respecto lorem impsun"
   },
   {
-    "id": "2",
-    "Nombre": "Gym 2",
-    "Imagen": "https://loremflickr.com/320/240",
-    "Dirección": "Calle 30 por 103 y 10"
+    "Id": "2",
+    "Nombre": "Gym B",
+    "Calificacion": "2.0",
+    "Direccion": "Calle 59 por 103 y 40 Altabrisa",
+    "Descripcion":
+        "Este gimnasio provee mucha informacion al respecto lorem impsun"
   },
   {
-    "id": "3",
-    "Nombre": "Gym 3",
-    "Imagen": "https://loremflickr.com/320/240",
-    "Dirección": "Calle 30 por 103 y 10"
+    "Id": "3",
+    "Nombre": "Gym C",
+    "Calificacion": "2.0",
+    "Direccion": "Calle 59 por 103 y 40 Altabrisa",
+    "Descripcion":
+        "Este gimnasio provee mucha informacion al respecto lorem impsun"
   },
   {
-    "id": "4",
-    "Nombre": "Gym 4",
-    "Imagen": "https://loremflickr.com/320/240",
-    "Dirección": "Calle 30 por 103 y 10"
+    "Id": "4",
+    "Nombre": "Gym D",
+    "Calificacion": "2.0",
+    "Direccion": "Calle 59 por 103 y 40 Altabrisa",
+    "Descripcion":
+        "Este gimnasio provee mucha informacion al respecto lorem impsun"
   },
   {
-    "id": "5",
-    "Nombre": "Gym 5",
-    "Imagen": "https://loremflickr.com/320/240",
-    "Dirección": "Calle 30 por 103 y 10"
+    "Id": "5",
+    "Nombre": "Gym E",
+    "Calificacion": "2.0",
+    "Direccion": "Calle 59 por 103 y 40 Altabrisa",
+    "Descripcion":
+        "Este gimnasio provee mucha informacion al respecto lorem impsun"
   },
   {
-    "id": "6",
-    "Nombre": "Gym 6",
-    "Imagen": "https://loremflickr.com/320/240",
-    "Dirección": "Calle 30 por 103 y 10"
+    "Id": "6",
+    "Nombre": "Gym F",
+    "Calificacion": "2.0",
+    "Direccion": "Calle 59 por 103 y 40 Altabrisa",
+    "Descripcion":
+        "Este gimnasio provee mucha informacion al respecto lorem impsun"
   },
   {
-    "id": "7",
-    "Nombre": "Gym 7",
-    "Imagen": "https://loremflickr.com/320/240",
-    "Dirección": "Calle 30 por 103 y 10"
+    "Id": "7",
+    "Nombre": "Gym G",
+    "Calificacion": "3.0",
+    "Direccion": "Calle 59 por 103 y 40 Altabrisa",
+    "Descripcion":
+        "Este gimnasio provee mucha informacion al respecto lorem impsun"
   },
   {
-    "id": "8",
-    "Nombre": "Gym 8",
-    "Imagen": "https://loremflickr.com/320/240",
-    "Dirección": "Calle 30 por 103 y 10"
+    "Id": "8",
+    "Nombre": "Gym H",
+    "Calificacion": "2.0",
+    "Direccion": "Calle 59 por 103 y 40 Altabrisa",
+    "Descripcion":
+        "Este gimnasio provee mucha informacion al respecto lorem impsun"
   },
   {
-    "id": "9",
-    "Nombre": "Gym 9",
-    "Imagen": "https://loremflickr.com/320/240",
-    "Dirección": "Calle 30 por 103 y 10"
+    "Id": "9",
+    "Nombre": "Gym I",
+    "Calificacion": "2.0",
+    "Direccion": "Calle 59 por 103 y 40 Altabrisa",
+    "Descripcion":
+        "Este gimnasio provee mucha informacion al respecto lorem impsun"
   },
   {
-    "id": "10",
-    "Nombre": "Gym 10",
-    "Imagen": "https://loremflickr.com/320/240",
-    "Dirección": "Calle 30 por 103 y 10"
+    "Id": "10",
+    "Nombre": "Gym J",
+    "Calificacion": "2.0",
+    "Direccion": "Calle 59 por 103 y 40 Altabrisa",
+    "Descripcion":
+        "Este gimnasio provee mucha informacion al respecto lorem impsun"
   },
   {
-    "id": "11",
-    "Nombre": "Gym 11",
-    "Imagen": "https://loremflickr.com/320/240",
-    "Dirección": "Calle 30 por 103 y 10"
+    "Id": "11",
+    "Nombre": "Gym K",
+    "Calificacion": "2.0",
+    "Direccion": "Calle 59 por 103 y 40 Altabrisa",
+    "Descripcion":
+        "Este gimnasio provee mucha informacion al respecto lorem impsun"
   },
   {
-    "id": "12",
-    "Nombre": "Gym 12",
-    "Imagen": "https://loremflickr.com/320/240",
-    "Dirección": "Calle 30 por 103 y 10"
+    "Id": "12",
+    "Nombre": "Gym L",
+    "Calificacion": "2.0",
+    "Direccion": "Calle 59 por 103 y 40 Altabrisa",
+    "Descripcion":
+        "Este gimnasio provee mucha informacion al respecto lorem impsun"
   },
   {
-    "id": "13",
-    "Nombre": "Gym 13",
-    "Imagen": "https://loremflickr.com/320/240",
-    "Dirección": "Calle 30 por 103 y 10"
+    "Id": "13",
+    "Nombre": "Gym M",
+    "Calificacion": "2.0",
+    "Direccion": "Calle 59 por 103 y 40 Altabrisa",
+    "Descripcion":
+        "Este gimnasio provee mucha informacion al respecto lorem impsun"
   },
   {
-    "id": "14",
-    "Nombre": "Gym 14",
-    "Imagen": "https://loremflickr.com/320/240",
-    "Dirección": "Calle 30 por 103 y 10"
+    "Id": "14",
+    "Nombre": "Gym N",
+    "Calificacion": "2.0",
+    "Direccion": "Calle 59 por 103 y 40 Altabrisa",
+    "Descripcion":
+        "Este gimnasio provee mucha informacion al respecto lorem impsun"
   },
   {
-    "id": "15",
-    "Nombre": "Gym 15",
-    "Imagen": "https://loremflickr.com/320/240",
-    "Dirección": "Calle 30 por 103 y 10"
+    "Id": "15",
+    "Nombre": "Gym O",
+    "Calificacion": "2.0",
+    "Direccion": "Calle 59 por 103 y 40 Altabrisa",
+    "Descripcion":
+        "Este gimnasio provee mucha informacion al respecto lorem impsun"
   }
 ];
 
@@ -104,13 +135,7 @@ class HomeScreen extends StatelessWidget {
     final gyms = Gym.fromJson(gymData);
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: AppBar(
-        backgroundColor: AppColors.darkGraySoft,
-        title: const Text(
-          'Gimnasios disponibles',
-          style: TextStyle(color: AppColors.primary500),
-        ),
-      ),
+      appBar: const CustomAppBar(title: 'Gimnasios Disponibles'),
       body: ListView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         itemCount: gyms.length,

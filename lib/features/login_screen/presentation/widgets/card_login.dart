@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gymbro/common/constants/colors.dart';
 import 'package:gymbro/common/constants/validators.dart';
+import 'package:gymbro/common/widgets/bottom_navigation_bar/presentation/main_widget.dart';
 import 'package:gymbro/features/home_screen/presentation/views/home_screen.dart';
 import 'package:gymbro/features/login_screen/bloc/bloc/login_bloc.dart';
 import 'package:gymbro/features/login_screen/presentation/views/register_screen.dart';
@@ -39,13 +40,13 @@ class CardLogin extends StatelessWidget {
       height: size.height * 0.43,
       decoration: BoxDecoration(
         color: AppColors.background,
-        borderRadius: BorderRadius.circular(14), // Borde redondeado
+        borderRadius: BorderRadius.circular(14),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.5),
             spreadRadius: 1,
             blurRadius: 8,
-            offset: const Offset(0, 3), // Cambia la posición de la sombra
+            offset: const Offset(0, 3),
           ),
         ],
       ),
@@ -84,16 +85,13 @@ class CardLogin extends StatelessWidget {
                 width: size.width * 0.8,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                          AppColors.darkGraySoft, // Color de fondo del botón
-                      foregroundColor: Colors
-                          .white // Color del texto y del icono (si lo tienes)
-                      ),
+                      backgroundColor: AppColors.darkGraySoft,
+                      foregroundColor: Colors.white),
                   onPressed: () {
                     BlocProvider.of<LoginBloc>(context)
                         .add(ShowLoginFieldsEvent());
                   },
-                  child: const Text('Login'),
+                  child: const Text('Inicia Sesión'),
                 )),
             SizedBox(
               height: size.height * 0.02,
@@ -119,14 +117,14 @@ class CardLogin extends StatelessWidget {
             const Row(
               children: [
                 Expanded(child: Divider(color: Colors.grey)),
-                SizedBox(width: 10), // Espacio entre la línea y el texto
+                SizedBox(width: 10),
                 Text(
                   '¿No tienes cuenta?',
                   style: TextStyle(
                     color: Colors.white,
                   ),
                 ),
-                SizedBox(width: 10), // Espacio entre el texto y la línea
+                SizedBox(width: 10),
                 Expanded(child: Divider(color: Colors.grey)),
               ],
             ),
@@ -142,60 +140,15 @@ class CardLogin extends StatelessWidget {
                       foregroundColor: AppColors.background),
                   onPressed: () {
                     Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                          builder: (context) => const HomeScreen()),
+                      MaterialPageRoute(builder: (context) => MainScreen()),
                     );
                   },
                   child: const Text('Ingresa como invitado'),
                 )),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.center,
-            //   children: [
-            //     SizedBox(
-            //       width: size.width * 0.15,
-            //       height: size.height * 0.06,
-            //       child: ElevatedButton(
-            //         onPressed: () {},
-            //         style: ElevatedButton.styleFrom(
-            //           padding: EdgeInsets.zero,
-            //           shape: RoundedRectangleBorder(
-            //             borderRadius: BorderRadius.circular(8),
-            //           ),
-            //           backgroundColor: Colors.blue,
-            //         ),
-            //         child: const Icon(
-            //           Icons.facebook,
-            //           color: Colors.white,
-            //         ),
-            //       ),
-            //     ),
-
-            //     SizedBox(width: size.width * .1), // Espacio entre botones
-            //     SizedBox(
-            //       width: size.width * 0.15, // Establece la anchura que deseas
-            //       height: size.height * 0.06, // Establece la altura que deseas
-            //       child: ElevatedButton(
-            //         onPressed: () {},
-            //         style: ElevatedButton.styleFrom(
-            //           padding: EdgeInsets
-            //               .zero, // Poner a cero para usar el tamaño del Container
-            //           shape: RoundedRectangleBorder(
-            //             borderRadius: BorderRadius.circular(8),
-            //           ),
-            //           backgroundColor: Colors.red,
-            //         ),
-            //         child: const Icon(
-            //           Icons.mail,
-            //           color: Colors.white,
-            //         ),
-            //       ),
-            //     ),
-            //   ],
-            // ),
             Expanded(
               child: state is ShowFieldsState
                   ? _LoginFields(size: size)
-                  : Container(), // Un contenedor vacío cuando no estás mostrando los campos
+                  : Container(),
             ),
           ],
         ),
@@ -204,12 +157,19 @@ class CardLogin extends StatelessWidget {
   }
 }
 
-class _LoginFields extends StatelessWidget {
+class _LoginFields extends StatefulWidget {
   final Size size;
-  _LoginFields({required this.size});
+  const _LoginFields({required this.size});
 
+  @override
+  State<_LoginFields> createState() => _LoginFieldsState();
+}
+
+class _LoginFieldsState extends State<_LoginFields> {
   final TextEditingController _emailController = TextEditingController();
+
   final TextEditingController _passwordController = TextEditingController();
+
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -217,7 +177,6 @@ class _LoginFields extends StatelessWidget {
     return Form(
       key: _formKey,
       child: Container(
-        height: size.height * 0.43,
         decoration: BoxDecoration(
           color: AppColors.background,
           borderRadius: BorderRadius.circular(14),
@@ -234,7 +193,14 @@ class _LoginFields extends StatelessWidget {
           padding: const EdgeInsets.all(17.0),
           child: Column(
             children: [
-              SizedBox(height: size.height * 0.02),
+              SizedBox(height: widget.size.height * 0.01),
+              const Text('Ingresa tus credenciales',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  )),
+              SizedBox(height: widget.size.height * 0.015),
               CustomTextField(
                 controller: _emailController,
                 labelText: "Correo electrónico",
@@ -258,7 +224,7 @@ class _LoginFields extends StatelessWidget {
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primary500,
-                      foregroundColor: AppColors.background, // foreground
+                      foregroundColor: AppColors.background,
                     ),
                     child: const Text('Regresar'),
                   ),

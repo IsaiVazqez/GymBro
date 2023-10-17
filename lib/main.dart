@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gymbro/common/widgets/bottom_navigation_bar/bloc/bloc/navigation_bloc.dart';
 import 'package:gymbro/features/login_screen/bloc/bloc/login_bloc.dart';
 import 'package:gymbro/features/login_screen/presentation/views/login_screen.dart';
 import 'package:gymbro/features/splash_screen/bloc/splash_bloc.dart';
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
         BlocProvider<SplashBloc>(
           create: (context) => SplashBloc(),
         ),
+        BlocProvider<NavigationBloc>(create: (context) => NavigationBloc())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
