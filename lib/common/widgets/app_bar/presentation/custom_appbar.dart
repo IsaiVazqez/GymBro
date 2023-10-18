@@ -9,6 +9,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      leading: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Image.asset('assets/horizsontalLogo.png'),
+      ),
       title: Text(
         title,
         style: const TextStyle(color: AppColors.primary500),
@@ -18,5 +22,5 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

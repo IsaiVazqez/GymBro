@@ -57,7 +57,7 @@ class GymCard extends StatelessWidget {
       children: List.generate(5, (index) {
         return Icon(
           index < calificacion ? Icons.star : Icons.star_border,
-          color: AppColors.darkGraySoft,
+          color: Colors.white,
         );
       }),
     );

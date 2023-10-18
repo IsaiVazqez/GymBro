@@ -1,6 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gymbro/common/constants/colors.dart';
 import 'package:gymbro/features/login_screen/presentation/views/login_screen.dart';
 import 'package:gymbro/features/splash_screen/bloc/splash_bloc.dart';
 import 'package:gymbro/features/splash_screen/bloc/splash_event.dart';
@@ -28,29 +29,34 @@ class SplashScreen extends StatelessWidget {
                 }));
           }
         },
-        child: Scaffold(body: BlocBuilder<SplashBloc, SplashState>(
-          builder: (context, state) {
-            Widget body;
-            switch (state.runtimeType) {
-              case SplashInitial:
-                body = Center(
-                  child: FadeIn(
-                    child: SizedBox(
-                      width: size.width * .55, // ajusta el ancho como desees
-                      height: size.height * .29, // ajusta la altura como desees
-                      child: Image.asset('assets/logo.png', fit: BoxFit.cover),
-                    ),
-                  ),
-                );
+        child: Scaffold(
+            backgroundColor: AppColors.background,
+            body: BlocBuilder<SplashBloc, SplashState>(
+              builder: (context, state) {
+                Widget body;
+                switch (state.runtimeType) {
+                  case SplashInitial:
+                    body = Center(
+                      child: FadeIn(
+                        child: SizedBox(
+                          width:
+                              size.width * .55, // ajusta el ancho como desees
+                          height:
+                              size.height * .29, // ajusta la altura como desees
+                          child:
+                              Image.asset('assets/logo.png', fit: BoxFit.cover),
+                        ),
+                      ),
+                    );
 
-                break;
+                    break;
 
-              default:
-                body = const Center(child: Text('Algo salió mal'));
-            }
-            return body;
-          },
-        )),
+                  default:
+                    body = const Center(child: Text('Algo salió mal'));
+                }
+                return body;
+              },
+            )),
       ),
     );
   }
