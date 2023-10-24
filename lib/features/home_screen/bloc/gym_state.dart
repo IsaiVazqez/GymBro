@@ -26,3 +26,23 @@ class GymsError extends GymState {
   @override
   List<Object?> get props => [message];
 }
+
+class GymInitial extends GymState {}
+
+class GymPlansLoaded extends GymState {
+  final List<Plan> plans;
+
+  GymPlansLoaded(this.plans);
+
+  @override
+  List<Object?> get props => [plans];
+}
+
+class GymError extends GymState {
+  final String message;
+
+  GymError(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}

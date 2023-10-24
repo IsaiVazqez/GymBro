@@ -4,7 +4,7 @@ import 'package:gymbro/common/models/gym_model.dart';
 
 class GymCard extends StatelessWidget {
   final Gym gym;
-  final Function(Gym) onTap;
+  final Function(String) onTap;
 
   const GymCard({Key? key, required this.gym, required this.onTap})
       : super(key: key);
@@ -13,7 +13,7 @@ class GymCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return InkWell(
-      onTap: () => onTap(gym.uuid as Gym),
+      onTap: () => onTap(gym.uuid),
       child: Card(
         color: AppColors.primary500,
         margin: const EdgeInsets.symmetric(vertical: 10),
@@ -31,7 +31,6 @@ class GymCard extends StatelessWidget {
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildStarRating(gym.calificacion),
                   Text(
                     style: const TextStyle(color: Colors.white),
                     gym.address,

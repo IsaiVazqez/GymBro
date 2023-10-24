@@ -15,7 +15,9 @@ class HomeScreen extends StatelessWidget {
       create: (context) => GymBloc()..add(LoadGyms()),
       child: Scaffold(
         backgroundColor: AppColors.background,
-        appBar: const CustomAppBar(title: 'Gimnasios'),
+        appBar: const CustomAppBar(
+          title: '',
+        ),
         body: BlocBuilder<GymBloc, GymState>(
           builder: (context, state) {
             switch (state.runtimeType) {
@@ -27,16 +29,21 @@ class HomeScreen extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                   itemCount: gyms.length,
-                  itemBuilder: (context, index) => GymCard(
-                    gym: gyms[index],
-                    onTap: (gym) {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => GymScreen(gym: gym),
-                        ),
-                      );
-                    },
-                  ),
+                  itemBuilder: (context, index) {
+                    final gym = gyms[index]; // Aquí obtienes el gimnasio actual
+                    return GymCard(
+                      gym: gym,
+                      onTap: (String) {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => GymScreen(
+                                gymUuid: gym
+                                    .uuid), // Aquí usas el UUID del gimnasio actual
+                          ),
+                        );
+                      },
+                    );
+                  },
                 );
               case GymsError:
                 return Center(child: Text((state as GymsError).message));

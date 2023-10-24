@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:flutter_svg/svg.dart';
+
 class Gym {
   Id id;
   String uuid;
@@ -10,8 +12,6 @@ class Gym {
   DateTime updatedAt;
   int v;
 
-  var calificacion;
-
   Gym({
     required this.id,
     required this.uuid,
@@ -21,7 +21,6 @@ class Gym {
     required this.createdAt,
     required this.updatedAt,
     required this.v,
-    this.calificacion = 5.0,
   });
 
   factory Gym.fromRawJson(String str) => Gym.fromJson(json.decode(str));
@@ -40,7 +39,6 @@ class Gym {
       );
 
   Map<String, dynamic> toJson() => {
-        "_id": id.toJson(),
         "uuid": uuid,
         "name": name,
         "description": description,

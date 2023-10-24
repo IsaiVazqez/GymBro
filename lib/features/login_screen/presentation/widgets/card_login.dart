@@ -18,7 +18,13 @@ class CardLogin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<LoginBloc, LoginState>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (state is LoginSuccessState) {
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (context) => MainScreen(),
+          ));
+        }
+      },
       builder: (context, state) {
         switch (state.runtimeType) {
           case ShowFieldsState:
@@ -230,18 +236,22 @@ class _LoginFieldsState extends State<_LoginFields> {
                   ),
                   ElevatedButton(
                       style: ButtonStyle(
-                          foregroundColor: MaterialStateColor.resolveWith(
-                              (states) => Colors.white),
-                          textStyle: MaterialStateProperty.all<TextStyle>(
-                            const TextStyle(fontSize: 15),
-                          ),
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                              AppColors.darkGraySoft)),
+                        foregroundColor: MaterialStateColor.resolveWith(
+                            (states) => Colors.white),
+                        textStyle: MaterialStateProperty.all<TextStyle>(
+                            const TextStyle(fontSize: 15)),
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            AppColors.darkGraySoft),
+                      ),
                       onPressed: () {
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                              builder: (context) => const HomeScreen()),
-                        );
+                        if (_formKey.currentState?.validate() == true) {
+                          context.read<LoginBloc>().add(
+                                LoginSubmitted(
+                                  email: _emailController.text,
+                                  password: _passwordController.text,
+                                ),
+                              );
+                        }
                       },
                       child: const Text('Ingresar')),
                 ],
