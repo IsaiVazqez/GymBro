@@ -20,7 +20,7 @@ class MainPage extends StatelessWidget {
 class MainScreen extends StatelessWidget {
   final List<Widget> _children = [
     const HomeScreen(),
-    const ProfileScreen(),
+    ProfileScreen(),
   ];
 
   MainScreen({super.key});

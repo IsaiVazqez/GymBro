@@ -39,10 +39,8 @@ class SplashScreen extends StatelessWidget {
                     body = Center(
                       child: FadeIn(
                         child: SizedBox(
-                          width:
-                              size.width * .55, // ajusta el ancho como desees
-                          height:
-                              size.height * .29, // ajusta la altura como desees
+                          width: size.width * .55,
+                          height: size.height * .29,
                           child:
                               Image.asset('assets/logo.png', fit: BoxFit.cover),
                         ),
