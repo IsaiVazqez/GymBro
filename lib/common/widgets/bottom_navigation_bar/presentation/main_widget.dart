@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gymbro/common/constants/colors.dart';
 import 'package:gymbro/common/widgets/bottom_navigation_bar/bloc/bloc/navigation_bloc.dart';
 import 'package:gymbro/features/home_screen/presentation/views/home_screen.dart';
-import 'package:gymbro/features/profle_screen/presentation/views/profile_screen.dart';
+import 'package:gymbro/features/profile_screen/presentation/presentation/views/profile_screen.dart';
 
 class MainPage extends StatelessWidget {
   const MainPage({super.key});
@@ -39,11 +39,11 @@ class MainScreen extends StatelessWidget {
             items: const [
               BottomNavigationBarItem(
                 icon: Icon(Icons.home),
-                label: 'Home',
+                label: 'Inicio',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.person),
-                label: 'Profile',
+                label: 'Perfil',
               ),
             ],
             onTap: (index) {

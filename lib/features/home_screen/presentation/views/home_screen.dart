@@ -25,25 +25,43 @@ class HomeScreen extends StatelessWidget {
                 return const Center(child: CircularProgressIndicator());
               case GymsLoaded:
                 final gyms = (state as GymsLoaded).gyms;
-                return ListView.builder(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                  itemCount: gyms.length,
-                  itemBuilder: (context, index) {
-                    final gym = gyms[index]; // Aquí obtienes el gimnasio actual
-                    return GymCard(
-                      gym: gym,
-                      onTap: (String) {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => GymScreen(
-                                gymUuid: gym
-                                    .uuid), // Aquí usas el UUID del gimnasio actual
-                          ),
-                        );
-                      },
-                    );
-                  },
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                      child: Text(
+                        'Gimnasios Disponibles',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: ListView.builder(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 10),
+                        itemCount: gyms.length,
+                        itemBuilder: (context, index) {
+                          final gym = gyms[index];
+                          return GymCard(
+                            gym: gym,
+                            onTap: (gymUuid) {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      GymScreen(gymUuid: gym.uuid!),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 );
               case GymsError:
                 return Center(child: Text((state as GymsError).message));

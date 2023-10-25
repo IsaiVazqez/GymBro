@@ -142,8 +142,8 @@ class CardLogin extends StatelessWidget {
                 width: size.width * 0.8,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primary500,
-                      foregroundColor: AppColors.background),
+                      backgroundColor: AppColors.darkGraySoft,
+                      foregroundColor: Colors.white),
                   onPressed: () {
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(builder: (context) => MainScreen()),

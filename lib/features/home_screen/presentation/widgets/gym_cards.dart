@@ -13,40 +13,65 @@ class GymCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return InkWell(
-      onTap: () => onTap(gym.uuid),
+      onTap: () => onTap(gym.uuid!),
       child: Card(
-        color: AppColors.primary500,
+        color: AppColors.darkGraySoft,
         margin: const EdgeInsets.symmetric(vertical: 10),
         elevation: 4,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-        child: Column(
-          children: [
-            ListTile(
-              contentPadding: EdgeInsets.symmetric(
-                  horizontal: size.width * 0.04,
-                  vertical: size.height * 0.0002),
-              title: Text(gym.name,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.white)),
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    style: const TextStyle(color: Colors.white),
-                    gym.address,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
+          side: const BorderSide(color: AppColors.lightGreen, width: 1),
+        ),
+        child: Padding(
+          padding: EdgeInsets.all(size.width * 0.04),
+          child: Column(children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const CircleAvatar(
+                  radius: 30, // Tamaño más pequeño para la imagen
+                  backgroundImage: AssetImage('assets/43350.jpg'),
+                ),
+                SizedBox(width: size.width * 0.04),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(gym.name!,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                    fontSize: 18)),
+                          ),
+                          _buildStarRating(4.5), // Ejemplo de calificación
+                        ],
+                      ),
+                      Text(
+                        gym.address!,
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 14),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
                   ),
-                  Text(
-                    style: const TextStyle(color: Colors.white),
-                    gym.description,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
-              ),
-            )
-          ],
+                ),
+              ],
+            ),
+            SizedBox(height: size.height * 0.005),
+            Text(
+              gym.description!,
+              style: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                  fontSize: 13),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ]),
         ),
       ),
     );
@@ -58,6 +83,7 @@ class GymCard extends StatelessWidget {
         return Icon(
           index < calificacion ? Icons.star : Icons.star_border,
           color: Colors.white,
+          size: 18,
         );
       }),
     );

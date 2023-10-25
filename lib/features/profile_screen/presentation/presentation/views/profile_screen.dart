@@ -61,6 +61,15 @@ class ProfileScreen extends StatelessWidget {
                 validator: (value) =>
                     value != null && value.isEmpty ? 'Campo requerido' : null,
               ),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: AppColors.primary500, // foreground
+                ),
+                child: const Text('Actualizar'),
+              ),
             ],
           ),
         ),
@@ -72,7 +81,7 @@ class ProfileScreen extends StatelessWidget {
     return Stack(
       alignment: Alignment.bottomRight,
       children: [
-        CircleAvatar(
+        const CircleAvatar(
           radius: 60,
           backgroundImage: NetworkImage(
               'https://www.gravatar.com/avatar/2c7d99fe281ecd3bcd65ab915bac6dd5?s=250'), // Cambia a la imagen que quieras mostrar

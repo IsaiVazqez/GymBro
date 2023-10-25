@@ -17,8 +17,8 @@ class GymBloc extends Bloc<GymEvent, GymState> {
     on<LoadGyms>(_mapLoadGymsToState);
     on<LoadGymPlansEvent>((event, emit) async {
       try {
-        final plans = await _gymService.fetchGymPlans(event.gymUuid);
-        emit(GymPlansLoaded(plans));
+        final plan = await _gymService.fetchGymPlans(event.gymUuid);
+        emit(GymPlansLoaded(plan));
       } catch (error) {
         emit(GymError(error.toString()));
       }

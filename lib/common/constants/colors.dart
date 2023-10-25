@@ -24,3 +24,11 @@ class AppColors {
     ], // Representa '#7CD8B3 0%', '#26BE81 100%'
   );
 }
+
+class AppTextStyles {
+  static const TextStyle title = TextStyle(
+    fontWeight: FontWeight.bold,
+    fontSize: 22,
+    color: Colors.white,
+  );
+}

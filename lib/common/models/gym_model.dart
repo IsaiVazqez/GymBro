@@ -1,26 +1,22 @@
 import 'dart:convert';
 
-import 'package:flutter_svg/svg.dart';
-
 class Gym {
-  Id id;
-  String uuid;
-  String name;
-  String description;
-  String address;
-  DateTime createdAt;
-  DateTime updatedAt;
-  int v;
+  String? uuid;
+  String? name;
+  String? description;
+  String? address;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  int? v;
 
   Gym({
-    required this.id,
-    required this.uuid,
-    required this.name,
-    required this.description,
-    required this.address,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.v,
+    this.uuid,
+    this.name,
+    this.description,
+    this.address,
+    this.createdAt,
+    this.updatedAt,
+    this.v,
   });
 
   factory Gym.fromRawJson(String str) => Gym.fromJson(json.decode(str));
@@ -28,13 +24,16 @@ class Gym {
   String toRawJson() => json.encode(toJson());
 
   factory Gym.fromJson(Map<String, dynamic> json) => Gym(
-        id: Id.fromJson(json["_id"]),
         uuid: json["uuid"],
         name: json["name"],
         description: json["description"],
         address: json["address"],
-        createdAt: DateTime.parse(json["createdAt"]),
-        updatedAt: DateTime.parse(json["updatedAt"]),
+        createdAt: json["createdAt"] == null
+            ? null
+            : DateTime.parse(json["createdAt"]),
+        updatedAt: json["updatedAt"] == null
+            ? null
+            : DateTime.parse(json["updatedAt"]),
         v: json["__v"],
       );
 
@@ -43,20 +42,8 @@ class Gym {
         "name": name,
         "description": description,
         "address": address,
-        "createdAt": createdAt.toIso8601String(),
-        "updatedAt": updatedAt.toIso8601String(),
+        "createdAt": createdAt?.toIso8601String(),
+        "updatedAt": updatedAt?.toIso8601String(),
         "__v": v,
       };
-}
-
-class Id {
-  Id();
-
-  factory Id.fromRawJson(String str) => Id.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
-  factory Id.fromJson(Map<String, dynamic> json) => Id();
-
-  Map<String, dynamic> toJson() => {};
 }

@@ -35,7 +35,7 @@ class SplashScreen extends StatelessWidget {
               builder: (context, state) {
                 Widget body;
                 switch (state.runtimeType) {
-                  case SplashInitial:
+                  case SplashLoading:
                     body = Center(
                       child: FadeIn(
                         child: SizedBox(
