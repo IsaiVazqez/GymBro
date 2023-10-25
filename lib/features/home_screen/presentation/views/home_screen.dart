@@ -15,59 +15,51 @@ class HomeScreen extends StatelessWidget {
       create: (context) => GymBloc()..add(LoadGyms()),
       child: Scaffold(
         backgroundColor: AppColors.background,
-        appBar: const CustomAppBar(
-          title: '',
-        ),
+        appBar: const CustomAppBar(title: ''),
         body: BlocBuilder<GymBloc, GymState>(
           builder: (context, state) {
-            switch (state.runtimeType) {
-              case GymsLoading:
-                return const Center(child: CircularProgressIndicator());
-              case GymsLoaded:
-                final gyms = (state as GymsLoaded).gyms;
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                      child: Text(
-                        'Gimnasios Disponibles',
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
+            return CustomScrollView(
+              slivers: [
+                SliverPadding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  sliver: SliverList(
+                    delegate: SliverChildListDelegate(
+                      [
+                        const SizedBox(height: 15),
+                        const Text(
+                          'Gimnasios Disponibles',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
                         ),
-                      ),
+                        const SizedBox(height: 5),
+                        if (state is GymsLoading)
+                          const Center(child: CircularProgressIndicator())
+                        else if (state is GymsLoaded)
+                          for (var gym in state.gyms)
+                            GymCard(
+                              gym: gym,
+                              onTap: (gymUuid) {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        GymScreen(gymUuid: gym.uuid!),
+                                  ),
+                                );
+                              },
+                            )
+                        else if (state is GymsError)
+                          Center(child: Text(state.message))
+                        else
+                          const Center(child: Text('Algo salió mal')),
+                      ],
                     ),
-                    Expanded(
-                      child: ListView.builder(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 15, vertical: 10),
-                        itemCount: gyms.length,
-                        itemBuilder: (context, index) {
-                          final gym = gyms[index];
-                          return GymCard(
-                            gym: gym,
-                            onTap: (gymUuid) {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      GymScreen(gymUuid: gym.uuid!),
-                                ),
-                              );
-                            },
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                );
-              case GymsError:
-                return Center(child: Text((state as GymsError).message));
-              default:
-                return const Center(child: Text('Algo salió mal'));
-            }
+                  ),
+                ),
+              ],
+            );
           },
         ),
       ),
