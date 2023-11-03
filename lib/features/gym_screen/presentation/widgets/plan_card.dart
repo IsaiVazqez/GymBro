@@ -52,7 +52,7 @@ class PlanCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Duración: ${plan.duration ?? 'No Disponible'}',
+                      'Duración: ${plan.duration ?? 'No Disponible'} Hora(s)',
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 14,

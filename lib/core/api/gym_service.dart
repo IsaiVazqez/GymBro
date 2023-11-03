@@ -10,7 +10,7 @@ class GymService {
 
   Future<List<Gym>> fetchGyms() async {
     try {
-      final response = await _dio.get('/gyms');
+      final response = await _dio.get('/branches');
       if (response.statusCode == 200) {
         final List<dynamic> gymsJson = response.data;
         return gymsJson.map((json) => Gym.fromJson(json)).toList();
@@ -25,7 +25,7 @@ class GymService {
 
   Future<Plan> fetchGymPlans(String gymUuid) async {
     try {
-      final response = await _dio.get('/gyms/$gymUuid/plans');
+      final response = await _dio.get('/branches/$gymUuid/plans');
       if (response.statusCode == 200) {
         final Map<String, dynamic> planJson = response.data;
         return Plan.fromJson(planJson);

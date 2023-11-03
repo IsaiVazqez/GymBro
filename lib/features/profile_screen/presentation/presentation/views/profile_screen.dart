@@ -1,16 +1,55 @@
 import 'package:flutter/material.dart';
 import 'package:gymbro/common/constants/colors.dart';
 import 'package:gymbro/common/widgets/app_bar/presentation/custom_appbar.dart';
+import 'package:gymbro/features/login_screen/presentation/views/login_screen.dart';
 import 'package:gymbro/features/login_screen/presentation/widgets/text_field.dart';
+import 'package:jwt_decode/jwt_decode.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
+  ProfileScreen({Key? key}) : super(key: key);
+
+  @override
+  _ProfileScreenState createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController lastNameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
   final TextEditingController birthDateController = TextEditingController();
 
-  ProfileScreen({Key? key}) : super(key: key);
+  @override
+  void initState() {
+    super.initState();
+    _loadUserProfile();
+  }
+
+  Future<void> _loadUserProfile() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+    if (token != null) {
+      final userData = Jwt.parseJwt(token);
+      print("User Data: $userData");
+      if (userData.containsKey('name')) {
+        List<String> nameParts = userData['name'].split(' ');
+        firstNameController.text = nameParts.first;
+        lastNameController.text = nameParts.sublist(1).join(' ');
+      }
+      setState(() {});
+    } else {
+      print('No token found');
+    }
+  }
+
+  Future<void> _logout() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('token'); // Eliminar el token
+    // Navegar de vuelta a la pantalla de inicio de sesión
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => const LoginScreen()),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,14 +86,6 @@ class ProfileScreen extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               CustomTextField(
-                controller: passwordController,
-                labelText: 'Contraseña',
-                obscureText: true,
-                validator: (value) =>
-                    value != null && value.isEmpty ? 'Campo requerido' : null,
-              ),
-              const SizedBox(height: 10),
-              CustomTextField(
                 controller: birthDateController,
                 labelText: 'Fecha de Nacimiento',
                 hasDatePicker: true,
@@ -62,14 +93,31 @@ class ProfileScreen extends StatelessWidget {
                     value != null && value.isEmpty ? 'Campo requerido' : null,
               ),
               const SizedBox(height: 10),
-              ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.white,
-                  backgroundColor: AppColors.primary500, // foreground
-                ),
-                child: const Text('Actualizar'),
-              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      // Implementar la lógica de actualización
+                    },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: AppColors.primary500, // foreground
+                    ),
+                    child: const Text('Actualizar'),
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: _logout,
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor:
+                          Colors.red, // Color para el botón de cerrar sesión
+                    ),
+                    child: const Text('Cerrar Sesión'),
+                  ),
+                ],
+              )
             ],
           ),
         ),

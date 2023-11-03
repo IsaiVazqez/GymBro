@@ -15,3 +15,21 @@ class LoginSubmitted extends LoginEvent {
 
   LoginSubmitted({required this.email, required this.password});
 }
+
+class RegisterSubmitted extends LoginEvent {
+  final String email;
+  final String phone;
+  final String birthdate;
+  final String firstName;
+  final String lastName;
+  final String password;
+
+  RegisterSubmitted({
+    required this.email,
+    required this.phone,
+    required this.birthdate,
+    required this.firstName,
+    required this.lastName,
+    required this.password,
+  });
+}

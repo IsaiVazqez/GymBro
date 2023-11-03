@@ -8,7 +8,7 @@ class AuthService {
   Future<bool> login(String email, String password) async {
     try {
       final response = await _dio.post('/auth/login', data: {
-        'username': email,
+        'userName': email,
         'password': password,
       });
 
@@ -30,5 +30,49 @@ class AuthService {
   Future<void> _saveToken(String token) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('token', token);
+  }
+
+  Future<bool> register({
+    required String email,
+    required String phone,
+    required String birthdate,
+    required String firstName,
+    required String lastName,
+    required String password,
+    String? createdAt,
+    String? updatedAt,
+  }) async {
+    try {
+      final response = await _dio.post(
+        '/customers/register',
+        data: {
+          "email": email,
+          "phone": phone,
+          "birthdate": birthdate,
+          "password": password,
+          "status": "string",
+          "firstName": firstName,
+          "lastName": lastName,
+        },
+      );
+
+      if (response.statusCode == 201) {
+        //await _saveToken(response.data['token']);
+        print('Registro exitoso');
+        return true;
+      } else {
+        print('Error during registration: ${response.statusCode}');
+        return false;
+      }
+    } on DioError catch (e) {
+      print('Error during registration: $e');
+      if (e.response != null) {
+        print('Error sending request!');
+        print('STATUS: ${e.response?.statusCode}');
+        print('DATA: ${e.response?.data}');
+        print('HEADERS: ${e.response?.headers}');
+      }
+      return false;
+    }
   }
 }

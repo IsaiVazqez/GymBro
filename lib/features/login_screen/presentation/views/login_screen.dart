@@ -14,6 +14,7 @@ class LoginScreen extends StatelessWidget {
     return BlocBuilder<LoginBloc, LoginState>(
       builder: (context, state) {
         return Scaffold(
+          backgroundColor: AppColors.background,
           body: SingleChildScrollView(
             child: SizedBox(
               height: size.height,
@@ -55,9 +56,9 @@ class LoginScreen extends StatelessWidget {
                     child: const Text(
                       'Todos los derechos reservados UTM 2023',
                       style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w200,
-                      ),
+                          fontSize: 14,
+                          fontWeight: FontWeight.w200,
+                          color: Colors.white),
                     ),
                   ),
                 ],

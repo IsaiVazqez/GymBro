@@ -25,9 +25,8 @@ class GymScreen extends StatelessWidget {
             case GymPlansLoading:
               return const Center(child: CircularProgressIndicator());
             case GymPlansLoaded:
-              final gym = (state as GymPlansLoaded).plan.gym;
+              final plan = (state as GymPlansLoaded).plan;
               final plans = state.plan.plans;
-
               return SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -35,7 +34,7 @@ class GymScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        gym?.name ?? 'Nombre del Gimnasio',
+                        plan.name ?? 'Nombre del Gimnasio',
                         style: AppTextStyles.title,
                       ),
                       const SizedBox(height: 8),
@@ -48,7 +47,10 @@ class GymScreen extends StatelessWidget {
                               color: Colors.white),
                           children: <TextSpan>[
                             TextSpan(
-                              text: gym?.address ?? 'No Disponible',
+                              // Aquí construyes la cadena de texto que representa la dirección completa.
+                              text: plan.address != null
+                                  ? ' Calle ${plan.address!.street}, Número ${plan.address!.building}, C.P ${plan.address!.zip}, ${plan.address!.neighborhood}, ${plan.address!.city}, ${plan.address!.state}, ${plan.address!.country}'
+                                  : 'No Disponible',
                               style: const TextStyle(
                                   fontWeight: FontWeight.normal),
                             ),
@@ -58,14 +60,14 @@ class GymScreen extends StatelessWidget {
                       const SizedBox(height: 8),
                       RichText(
                         text: TextSpan(
-                          text: 'Descripción: ',
+                          text: 'Número: ',
                           style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 18,
                               color: Colors.white),
                           children: <TextSpan>[
                             TextSpan(
-                              text: gym?.description ?? 'No Disponible',
+                              text: plan.phone ?? 'No Disponible',
                               style: const TextStyle(
                                   fontWeight: FontWeight.normal),
                             ),

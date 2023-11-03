@@ -20,9 +20,21 @@ class CardLogin extends StatelessWidget {
     return BlocConsumer<LoginBloc, LoginState>(
       listener: (context, state) {
         if (state is LoginSuccessState) {
-          Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (context) => MainScreen(),
-          ));
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => MainScreen(),
+            ),
+          );
+        } else if (state is LoginErrorState) {
+          // Aquí es donde mostramos el SnackBar con el mensaje de error
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              SnackBar(
+                content: Text(state.error),
+                backgroundColor: Colors.red,
+              ),
+            );
         }
       },
       builder: (context, state) {

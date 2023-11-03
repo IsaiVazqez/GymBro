@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gymbro/common/constants/colors.dart';
 import 'package:gymbro/common/constants/validators.dart';
+import 'package:gymbro/features/login_screen/bloc/bloc/login_bloc.dart';
+import 'package:gymbro/features/login_screen/presentation/views/login_screen.dart';
 import 'package:gymbro/features/login_screen/presentation/widgets/text_field.dart';
 
 class RegisterScreen extends StatelessWidget {
@@ -57,6 +60,35 @@ class _RegisterCardState extends State<_RegisterCard> {
   final TextEditingController _phoneController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool _isFormValid = false;
+  Future<void> _showRegistrationDialog(
+      {required String title, required String message}) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible:
+          false, // El usuario necesita presionar el botón para cerrar el diálogo
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Aceptar'),
+              onPressed: () {
+                Navigator.pop(
+                    dialogContext); // Asegúrate de usar dialogContext aquí
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _navigateToLoginScreen() {
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => const LoginScreen()),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -153,16 +185,44 @@ class _RegisterCardState extends State<_RegisterCard> {
         ),
       ),
       onPressed: () {
-        if (_formKey.currentState!.validate()) {
-          // Si todas las validaciones pasan, ejecuta la lógica de registro
-          setState(() {
-            _isFormValid = true;
-          });
-        } else {
-          setState(() {
-            _isFormValid = false;
-          });
+        {
+          if (_formKey.currentState!.validate()) {
+            context.read<LoginBloc>().add(
+                  RegisterSubmitted(
+                    email: _emailController.text,
+                    phone: _phoneController.text,
+                    birthdate: _dateController.text,
+                    firstName: _nameController.text,
+                    lastName: _secondNameController.text,
+                    password: _passwordController.text,
+                  ),
+                );
+
+            // Escuchar cambios de estado del LoginBloc
+            context.read<LoginBloc>().stream.listen((state) {
+              if (state is RegisterSuccessState) {
+                _showRegistrationDialog(
+                    title: 'Registro Completado',
+                    message: 'Tu registro se ha completado exitosamente.');
+              } else if (state is RegisterErrorState) {
+                _showRegistrationDialog(
+                    title: 'Error de Registro', message: state.errorMessage);
+              }
+            });
+
+            setState(() {
+              _isFormValid = true;
+            });
+          } else {
+            setState(() {
+              _isFormValid = false;
+            });
+            _showRegistrationDialog(
+                title: 'Error de Registro',
+                message: 'Por favor, revisa los campos.');
+          }
         }
+        ;
       },
       child: const Text("Registrarse"),
     );

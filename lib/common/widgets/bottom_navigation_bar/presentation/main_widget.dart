@@ -31,26 +31,33 @@ class MainScreen extends StatelessWidget {
       builder: (context, state) {
         return Scaffold(
           body: _children[state],
-          bottomNavigationBar: BottomNavigationBar(
-            backgroundColor: AppColors.darkGraySoft,
-            selectedItemColor: AppColors.primary500,
-            unselectedItemColor: Colors.white70,
-            currentIndex: state,
-            items: const [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                label: 'Inicio',
+          bottomNavigationBar: Container(
+            decoration: const BoxDecoration(
+              border: Border(
+                top: BorderSide(color: AppColors.primary500, width: 1.0),
               ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.person),
-                label: 'Perfil',
-              ),
-            ],
-            onTap: (index) {
-              BlocProvider.of<NavigationBloc>(context).add(
-                index == 0 ? ShowHomeEvent() : ShowProfileEvent(),
-              );
-            },
+            ),
+            child: BottomNavigationBar(
+              backgroundColor: AppColors.background,
+              selectedItemColor: AppColors.primary500,
+              unselectedItemColor: Colors.white70,
+              currentIndex: state,
+              items: const [
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.home),
+                  label: 'Inicio',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.person),
+                  label: 'Perfil',
+                ),
+              ],
+              onTap: (index) {
+                BlocProvider.of<NavigationBloc>(context).add(
+                  index == 0 ? ShowHomeEvent() : ShowProfileEvent(),
+                );
+              },
+            ),
           ),
         );
       },

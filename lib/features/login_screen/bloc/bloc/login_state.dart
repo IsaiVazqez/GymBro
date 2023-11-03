@@ -18,3 +18,11 @@ class LoginErrorState extends LoginState {
 
   LoginErrorState(this.error);
 }
+
+class RegisterSuccessState extends LoginState {}
+
+class RegisterErrorState extends LoginState {
+  final String errorMessage;
+
+  RegisterErrorState({required this.errorMessage});
+}

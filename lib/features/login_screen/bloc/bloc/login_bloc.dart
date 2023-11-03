@@ -15,6 +15,29 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<LoginEvent>(_onLoginEvent);
     on<ShowRegisterFieldsEvent>(_onShowRegisterFieldsEvent);
     on<ShowDefaultViewEvent>(_onShowDefaultViewEvent);
+    on<RegisterSubmitted>(_onRegisterSubmitted);
+  }
+  void _onRegisterSubmitted(
+      RegisterSubmitted event, Emitter<LoginState> emit) async {
+    emit(LoadingState());
+    try {
+      final success = await _authService.register(
+        email: event.email,
+        phone: event.phone,
+        birthdate: event.birthdate,
+        firstName: event.firstName,
+        lastName: event.lastName,
+        password: event.password,
+      );
+
+      if (success) {
+        emit(RegisterSuccessState());
+      } else {
+        emit(RegisterErrorState(errorMessage: 'Error en el registro'));
+      }
+    } catch (error) {
+      emit(RegisterErrorState(errorMessage: 'Error en el registro: $error'));
+    }
   }
 
   void _onShowLoginFieldsEvent(

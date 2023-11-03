@@ -50,26 +50,25 @@ class GymCard extends StatelessWidget {
                         ],
                       ),
                       Text(
-                        gym.address!,
+                        gym.phone!,
                         style:
                             const TextStyle(color: Colors.white, fontSize: 14),
                         maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Text(
+                        gym.email!,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                            fontSize: 13),
+                        maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
                     ],
                   ),
                 ),
               ],
-            ),
-            SizedBox(height: size.height * 0.005),
-            Text(
-              gym.description!,
-              style: const TextStyle(
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
-                  fontSize: 13),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
             ),
           ]),
         ),
