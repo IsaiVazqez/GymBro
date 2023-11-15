@@ -43,6 +43,9 @@ class Validators {
     if (value.length < 10) {
       return 'El número telefónico debe tener al menos 10 caracteres.';
     }
+    if (value.length > 10) {
+      return 'El número telefónico debe tener máximo 10 caracteres.';
+    }
     return null;
   }
 

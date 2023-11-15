@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gymbro/common/constants/colors.dart';
 import 'package:gymbro/common/widgets/bottom_navigation_bar/bloc/bloc/navigation_bloc.dart';
+import 'package:gymbro/features/MyPlans/presentation/plans_screen.dart';
 import 'package:gymbro/features/home_screen/presentation/views/home_screen.dart';
 import 'package:gymbro/features/profile_screen/presentation/presentation/views/profile_screen.dart';
 
@@ -21,6 +22,7 @@ class MainScreen extends StatelessWidget {
   final List<Widget> _children = [
     const HomeScreen(),
     ProfileScreen(),
+    SubscribedPlansScreen(), // Asegúrate de que esta pantalla esté definida
   ];
 
   MainScreen({super.key});
@@ -51,11 +53,21 @@ class MainScreen extends StatelessWidget {
                   icon: Icon(Icons.person),
                   label: 'Perfil',
                 ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.sports_gymnastics),
+                  label: 'Mis Planes',
+                ),
               ],
               onTap: (index) {
-                BlocProvider.of<NavigationBloc>(context).add(
-                  index == 0 ? ShowHomeEvent() : ShowProfileEvent(),
-                );
+                if (index == 0) {
+                  BlocProvider.of<NavigationBloc>(context).add(ShowHomeEvent());
+                } else if (index == 1) {
+                  BlocProvider.of<NavigationBloc>(context)
+                      .add(ShowProfileEvent());
+                } else if (index == 2) {
+                  BlocProvider.of<NavigationBloc>(context)
+                      .add(ShowSubscribedPlansEvent());
+                }
               },
             ),
           ),

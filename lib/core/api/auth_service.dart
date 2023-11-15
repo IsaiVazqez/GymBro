@@ -7,7 +7,7 @@ class AuthService {
 
   Future<bool> login(String email, String password) async {
     try {
-      final response = await _dio.post('/auth/login', data: {
+      final response = await _dio.post('/auth/customers', data: {
         'userName': email,
         'password': password,
       });
@@ -57,9 +57,14 @@ class AuthService {
       );
 
       if (response.statusCode == 201) {
-        //await _saveToken(response.data['token']);
-        print('Registro exitoso');
-        return true;
+        if (response.data['token'] != null) {
+          await _saveToken(response.data['token']);
+          print('Registro exitoso y token guardado');
+          return true;
+        } else {
+          print('Registro exitoso pero sin token');
+          return false;
+        }
       } else {
         print('Error during registration: ${response.statusCode}');
         return false;

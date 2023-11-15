@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gymbro/common/constants/colors.dart';
 import 'package:gymbro/common/constants/validators.dart';
 import 'package:gymbro/common/widgets/bottom_navigation_bar/presentation/main_widget.dart';
-import 'package:gymbro/features/home_screen/presentation/views/home_screen.dart';
 import 'package:gymbro/features/login_screen/bloc/bloc/login_bloc.dart';
 import 'package:gymbro/features/login_screen/presentation/views/register_screen.dart';
 import 'package:gymbro/features/login_screen/presentation/widgets/text_field.dart';

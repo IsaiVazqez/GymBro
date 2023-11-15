@@ -46,7 +46,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('token'); // Eliminar el token
     // Navegar de vuelta a la pantalla de inicio de sesión
-    Navigator.of(context).push(
+    // ignore: use_build_context_synchronously
+    Navigator.of(context).pushReplacement(
       MaterialPageRoute(builder: (context) => const LoginScreen()),
     );
   }

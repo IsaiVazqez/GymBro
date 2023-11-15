@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gymbro/common/constants/colors.dart';
 import 'package:gymbro/common/constants/validators.dart';
+import 'package:gymbro/common/widgets/bottom_navigation_bar/presentation/main_widget.dart';
 import 'package:gymbro/features/login_screen/bloc/bloc/login_bloc.dart';
-import 'package:gymbro/features/login_screen/presentation/views/login_screen.dart';
 import 'package:gymbro/features/login_screen/presentation/widgets/text_field.dart';
 
 class RegisterScreen extends StatelessWidget {
@@ -11,31 +11,80 @@ class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
+    return BlocListener<LoginBloc, LoginState>(
+      listener: (context, state) {
+        if (state is RegisterSuccessState) {
+          _showRegistrationDialog(
+                  context: context,
+                  title: 'Registro Completado',
+                  message: 'Tu registro se ha completado exitosamente.')
+              .then((_) {
+            // Navegar a la pantalla de inicio después de cerrar el diálogo
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => MainScreen()),
+            );
+          });
+        } else if (state is RegisterErrorState) {
+          _showRegistrationDialog(
+              context: context,
+              title: 'Error de Registro',
+              message: state.errorMessage);
+        }
+      },
+      child: Scaffold(
         backgroundColor: AppColors.background,
-        title: const Text(
-          'Crea tu cuenta',
-          style: TextStyle(
+        appBar: AppBar(
+          backgroundColor: AppColors.background,
+          title: const Text(
+            'Crea tu cuenta',
+            style: TextStyle(
+              color: AppColors.primary500,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
             color: AppColors.primary500,
-            fontWeight: FontWeight.bold,
+            onPressed: () => Navigator.pop(context),
           ),
         ),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          color: AppColors.primary500,
-          onPressed: () => Navigator.pop(context),
-        ),
-      ),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: _RegisterCard(size: size),
+        body: Center(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: _RegisterCard(
+                size: size,
+              ),
+            ),
           ),
         ),
       ),
+    );
+  }
+
+  Future<void> _showRegistrationDialog(
+      {required BuildContext context,
+      required String title,
+      required String message}) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible:
+          false, // El usuario necesita presionar el botón para cerrar el diálogo
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Aceptar'),
+              onPressed: () {
+                Navigator.pop(
+                    dialogContext); // Asegúrate de usar dialogContext aquí
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }
@@ -60,35 +109,6 @@ class _RegisterCardState extends State<_RegisterCard> {
   final TextEditingController _phoneController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool _isFormValid = false;
-  Future<void> _showRegistrationDialog(
-      {required String title, required String message}) async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible:
-          false, // El usuario necesita presionar el botón para cerrar el diálogo
-      builder: (BuildContext dialogContext) {
-        return AlertDialog(
-          title: Text(title),
-          content: Text(message),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Aceptar'),
-              onPressed: () {
-                Navigator.pop(
-                    dialogContext); // Asegúrate de usar dialogContext aquí
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void _navigateToLoginScreen() {
-    Navigator.of(context).push(
-      MaterialPageRoute(builder: (context) => const LoginScreen()),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -199,16 +219,6 @@ class _RegisterCardState extends State<_RegisterCard> {
                 );
 
             // Escuchar cambios de estado del LoginBloc
-            context.read<LoginBloc>().stream.listen((state) {
-              if (state is RegisterSuccessState) {
-                _showRegistrationDialog(
-                    title: 'Registro Completado',
-                    message: 'Tu registro se ha completado exitosamente.');
-              } else if (state is RegisterErrorState) {
-                _showRegistrationDialog(
-                    title: 'Error de Registro', message: state.errorMessage);
-              }
-            });
 
             setState(() {
               _isFormValid = true;
@@ -217,9 +227,6 @@ class _RegisterCardState extends State<_RegisterCard> {
             setState(() {
               _isFormValid = false;
             });
-            _showRegistrationDialog(
-                title: 'Error de Registro',
-                message: 'Por favor, revisa los campos.');
           }
         }
         ;

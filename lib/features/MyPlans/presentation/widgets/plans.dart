@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gymbro/common/constants/colors.dart';
 import 'package:gymbro/common/models/plan_model.dart';
-import 'package:gymbro/core/api/gym_service.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-class PlanCard extends StatelessWidget {
+class PlansCard extends StatelessWidget {
   final PlanElement plan;
 
-  const PlanCard({Key? key, required this.plan}) : super(key: key);
+  const PlansCard({Key? key, required this.plan}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -68,37 +66,6 @@ class PlanCard extends StatelessWidget {
                       ),
                     ),
                   ],
-                ),
-                ElevatedButton(
-                  onPressed: () async {
-                    final prefs = await SharedPreferences.getInstance();
-                    final token = prefs.getString('token');
-
-                    if (token != null) {
-                      try {
-                        await GymService().subscribeToPlan(plan.uuid!);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text("Suscripción exitosa")),
-                        );
-                      } catch (e) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("Error al suscribirse: $e")),
-                        );
-                      }
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content:
-                              Text("Necesitas iniciar sesión para inscribirte"),
-                        ),
-                      );
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: AppColors.primary500, // foreground
-                  ),
-                  child: const Text('Inscribirse'),
                 ),
               ],
             ),
