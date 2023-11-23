@@ -6,6 +6,7 @@ import 'package:gymbro/core/api/user_service.dart';
 import 'package:gymbro/features/login_screen/presentation/views/login_screen.dart';
 import 'package:gymbro/features/login_screen/presentation/widgets/text_field.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/services.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -20,6 +21,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final TextEditingController lastNameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController birthDateController = TextEditingController();
+  final TextEditingController phoneControler = TextEditingController();
 
   @override
   void initState() {
@@ -33,6 +35,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       firstNameController.text = userProfile.firstName!;
       lastNameController.text = userProfile.lastName!;
       emailController.text = userProfile.email!;
+      phoneControler.text = userProfile.phone!;
       birthDateController.text = userProfile.birthdate!.toIso8601String();
       setState(() {});
     } catch (e) {
@@ -76,20 +79,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               const SizedBox(height: 20),
               CustomTextField(
+                controller: birthDateController,
+                labelText: 'Fecha de Nacimiento',
+                hasDatePicker: true,
+                validator: (value) =>
+                    value != null && value.isEmpty ? 'Campo requerido' : null,
+              ),
+              const SizedBox(height: 20),
+              CustomTextField(
+                controller: phoneControler,
+                labelText: 'Teléfono',
+                keyboardType: TextInputType.phone,
+                validator: (value) =>
+                    value != null && value.isEmpty ? 'Campo requerido' : null,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  LengthLimitingTextInputFormatter(10),
+                ],
+                enabled: false,
+              ),
+              const SizedBox(height: 20),
+              CustomTextField(
                 controller: emailController,
                 labelText: 'Correo',
                 keyboardType: TextInputType.emailAddress,
                 validator: (value) =>
                     value != null && value.isEmpty ? 'Campo requerido' : null,
                 enabled: false,
-              ),
-              const SizedBox(height: 20),
-              CustomTextField(
-                controller: birthDateController,
-                labelText: 'Fecha de Nacimiento',
-                hasDatePicker: true,
-                validator: (value) =>
-                    value != null && value.isEmpty ? 'Campo requerido' : null,
               ),
               const SizedBox(height: 20),
               Row(
@@ -103,17 +119,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           lastName: lastNameController.text,
                           birthdate:
                               DateTime.tryParse(birthDateController.text),
-                          // No actualizamos el correo ya que está bloqueado
+                          phone: phoneControler.text,
                         );
                         bool success =
                             await UserService().updateProfile(updatedProfile);
                         if (success) {
-                          // Mostrar mensaje de éxito
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content:
+                                  const Text('Perfil actualizado con éxito'),
+                              backgroundColor: Colors.green,
+                            ),
+                          );
                         } else {
-                          // Mostrar mensaje de error
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content:
+                                  const Text('Error al actualizar el perfil'),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
                         }
                       } catch (e) {
-                        // Mostrar mensaje de error
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Error: $e'),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
                       }
                     },
                     style: ElevatedButton.styleFrom(

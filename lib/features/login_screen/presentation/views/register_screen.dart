@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gymbro/common/constants/colors.dart';
 import 'package:gymbro/common/constants/validators.dart';
@@ -144,6 +145,10 @@ class _RegisterCardState extends State<_RegisterCard> {
                 labelText: "Número telefónico",
                 keyboardType: TextInputType.phone,
                 validator: Validators.validatePhoneNumber,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  LengthLimitingTextInputFormatter(10),
+                ],
               ),
               const SizedBox(height: 20),
               CustomTextField(

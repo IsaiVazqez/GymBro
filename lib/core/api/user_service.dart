@@ -26,15 +26,24 @@ class UserService {
     }
   }
 
-  Future<bool> updateProfile(UserProfile updatedProfile) async {
+  Future<bool> updateProfile(UserProfile userProfile) async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('token');
+    final data = {
+      "phone": userProfile.phone,
+      "birthdate": userProfile.birthdate?.toIso8601String(),
+      "firstName": userProfile.firstName,
+      "lastName": userProfile.lastName,
+    };
+
+    print(
+        'Datos enviados para actualización: $data'); // Imprimir los datos enviados
 
     try {
       final response = await _dio.patch(
         '$apiUrl/customers/profile',
         options: Options(headers: {'Authorization': 'Bearer $token'}),
-        data: updatedProfile.toJson(),
+        data: data,
       );
 
       return response.statusCode == 200;

@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:gymbro/common/constants/colors.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter/services.dart';
 
 class CustomTextField extends StatefulWidget {
   final TextEditingController controller;
@@ -12,6 +13,7 @@ class CustomTextField extends StatefulWidget {
   final bool hasDatePicker;
   final String? Function(String?)? validator;
   final bool enabled; // Nuevo parámetro
+  final List<TextInputFormatter>? inputFormatters;
 
   const CustomTextField({
     Key? key,
@@ -22,6 +24,7 @@ class CustomTextField extends StatefulWidget {
     this.obscureText = false,
     this.hasDatePicker = false,
     this.enabled = true,
+    this.inputFormatters,
   }) : super(key: key);
 
   @override
@@ -56,6 +59,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       controller: widget.controller,
       keyboardType: widget.keyboardType,
       obscureText: widget.obscureText,
+      inputFormatters: widget.inputFormatters,
       style: const TextStyle(color: Colors.white),
       decoration: InputDecoration(
         fillColor: AppColors.background,
@@ -71,7 +75,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
         ),
         suffixIcon: widget.hasDatePicker
             ? IconButton(
-                icon: const Icon(Icons.calendar_today, color: Colors.white),
+                icon: const Icon(Icons.calendar_today,
+                    color: AppColors.lightGreen),
                 onPressed: () async {
                   DateTime? selectedDate = await showDatePicker(
                     context: context,
