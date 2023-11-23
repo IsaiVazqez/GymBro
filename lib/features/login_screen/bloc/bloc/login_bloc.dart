@@ -30,13 +30,18 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         password: event.password,
       );
 
-      if (success) {
-        emit(RegisterSuccessState());
-      } else {
-        emit(RegisterErrorState(errorMessage: 'Error en el registro'));
-      }
+      // Retrasar la emisión del estado de éxito o error
+      await Future.delayed(const Duration(seconds: 2), () {
+        if (success) {
+          emit(RegisterSuccessState());
+        } else {
+          emit(RegisterErrorState(errorMessage: 'Error en el registro'));
+        }
+      });
     } catch (error) {
-      emit(RegisterErrorState(errorMessage: 'Error en el registro: $error'));
+      await Future.delayed(const Duration(seconds: 2), () {
+        emit(RegisterErrorState(errorMessage: 'Error en el registro: $error'));
+      });
     }
   }
 

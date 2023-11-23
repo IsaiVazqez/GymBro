@@ -229,7 +229,6 @@ class _RegisterCardState extends State<_RegisterCard> {
             });
           }
         }
-        ;
       },
       child: const Text("Registrarse"),
     );

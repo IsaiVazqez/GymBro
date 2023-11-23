@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:gymbro/common/constants/colors.dart';
 import 'package:gymbro/common/models/plan_model.dart';
@@ -82,7 +84,7 @@ class PlanCard extends StatelessWidget {
                         );
                       } catch (e) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("Error al suscribirse: $e")),
+                          SnackBar(content: Text("$e")),
                         );
                       }
                     } else {

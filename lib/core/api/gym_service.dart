@@ -18,7 +18,6 @@ class GymService {
         throw Exception('Failed to load gyms');
       }
     } catch (e) {
-      print(e);
       throw Exception('Error fetching gyms');
     }
   }
@@ -26,6 +25,7 @@ class GymService {
   Future<Plan> fetchGymPlans(String gymUuid) async {
     try {
       final response = await _dio.get('/branches/$gymUuid/plans');
+
       if (response.statusCode == 200) {
         final Map<String, dynamic> planJson = response.data;
         return Plan.fromJson(planJson);
@@ -43,28 +43,21 @@ class GymService {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('token');
 
-    final String url =
-        'https://gymbro-services.onrender.com/api/subscriptions'; // Asegúrate de que esta URL sea correcta
-
     try {
       final response = await _dio.post(
-        url,
+        '$apiUrl/subscriptions',
         options: Options(headers: {
           'Authorization': 'Bearer $token',
           'Content-Type': 'application/json',
         }),
-        data: jsonEncode({
-          'plan': planUuid
-        }), // Asegúrate de que el cuerpo de la solicitud esté bien formateado
+        data: jsonEncode({'plan': planUuid}),
       );
 
-      if (response.statusCode == 201) {
-        print('Subscribed to plan');
-      } else {
-        throw Exception('Failed to subscribe to plan');
+      if (response.statusCode == 400) {
+        throw Exception('Ya estás suscrito a este plan');
       }
     } catch (e) {
-      throw Exception('Error al suscribirse al plan: $e');
+      throw Exception('Ya estás suscrito a este plan');
     }
   }
 
@@ -74,7 +67,7 @@ class GymService {
 
     try {
       final response = await _dio.get(
-        'https://gymbro-services.onrender.com/api/plans',
+        '$apiUrl/plans',
         options: Options(headers: {'Authorization': 'Bearer $token'}),
       );
 

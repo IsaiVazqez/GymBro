@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gymbro/common/constants/colors.dart';
 import 'package:gymbro/common/widgets/bottom_navigation_bar/bloc/bloc/navigation_bloc.dart';
-import 'package:gymbro/features/MyPlans/presentation/plans_screen.dart';
+import 'package:gymbro/features/plans_screen/presentation/views/plans_screen.dart';
 import 'package:gymbro/features/home_screen/presentation/views/home_screen.dart';
 import 'package:gymbro/features/profile_screen/presentation/presentation/views/profile_screen.dart';
 
@@ -21,8 +21,8 @@ class MainPage extends StatelessWidget {
 class MainScreen extends StatelessWidget {
   final List<Widget> _children = [
     const HomeScreen(),
-    ProfileScreen(),
-    SubscribedPlansScreen(), // Asegúrate de que esta pantalla esté definida
+    const SubscribedPlansScreen(),
+    const ProfileScreen(),
   ];
 
   MainScreen({super.key});
@@ -50,12 +50,12 @@ class MainScreen extends StatelessWidget {
                   label: 'Inicio',
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.person),
-                  label: 'Perfil',
-                ),
-                BottomNavigationBarItem(
                   icon: Icon(Icons.sports_gymnastics),
                   label: 'Mis Planes',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.person),
+                  label: 'Perfil',
                 ),
               ],
               onTap: (index) {

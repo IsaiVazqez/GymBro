@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:gymbro/common/constants/colors.dart';
 import 'package:intl/intl.dart';
@@ -9,6 +11,7 @@ class CustomTextField extends StatefulWidget {
   final bool obscureText;
   final bool hasDatePicker;
   final String? Function(String?)? validator;
+  final bool enabled; // Nuevo parámetro
 
   const CustomTextField({
     Key? key,
@@ -18,6 +21,7 @@ class CustomTextField extends StatefulWidget {
     this.keyboardType = TextInputType.text,
     this.obscureText = false,
     this.hasDatePicker = false,
+    this.enabled = true,
   }) : super(key: key);
 
   @override
@@ -47,6 +51,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      enabled: widget.enabled,
       validator: widget.validator,
       controller: widget.controller,
       keyboardType: widget.keyboardType,

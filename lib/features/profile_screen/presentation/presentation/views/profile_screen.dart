@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:gymbro/common/constants/colors.dart';
+import 'package:gymbro/common/models/user_mode.dart';
 import 'package:gymbro/common/widgets/app_bar/presentation/custom_appbar.dart';
+import 'package:gymbro/core/api/user_service.dart';
 import 'package:gymbro/features/login_screen/presentation/views/login_screen.dart';
 import 'package:gymbro/features/login_screen/presentation/widgets/text_field.dart';
-import 'package:jwt_decode/jwt_decode.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileScreen extends StatefulWidget {
-  ProfileScreen({Key? key}) : super(key: key);
+  const ProfileScreen({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _ProfileScreenState createState() => _ProfileScreenState();
 }
 
@@ -26,26 +28,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future<void> _loadUserProfile() async {
-    final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString('token');
-    if (token != null) {
-      final userData = Jwt.parseJwt(token);
-      print("User Data: $userData");
-      if (userData.containsKey('name')) {
-        List<String> nameParts = userData['name'].split(' ');
-        firstNameController.text = nameParts.first;
-        lastNameController.text = nameParts.sublist(1).join(' ');
-      }
+    try {
+      final userProfile = await UserService().fetchUserProfile();
+      firstNameController.text = userProfile.firstName!;
+      lastNameController.text = userProfile.lastName!;
+      emailController.text = userProfile.email!;
+      birthDateController.text = userProfile.birthdate!.toIso8601String();
       setState(() {});
-    } else {
-      print('No token found');
+    } catch (e) {
+      // Manejar el error aquí
     }
   }
 
   Future<void> _logout() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.remove('token'); // Eliminar el token
-    // Navegar de vuelta a la pantalla de inicio de sesión
+    await prefs.remove('token');
     // ignore: use_build_context_synchronously
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(builder: (context) => const LoginScreen()),
@@ -70,22 +67,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 validator: (value) =>
                     value != null && value.isEmpty ? 'Campo requerido' : null,
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 20),
               CustomTextField(
                 controller: lastNameController,
                 labelText: 'Apellidos',
                 validator: (value) =>
                     value != null && value.isEmpty ? 'Campo requerido' : null,
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 20),
               CustomTextField(
                 controller: emailController,
                 labelText: 'Correo',
                 keyboardType: TextInputType.emailAddress,
                 validator: (value) =>
                     value != null && value.isEmpty ? 'Campo requerido' : null,
+                enabled: false,
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 20),
               CustomTextField(
                 controller: birthDateController,
                 labelText: 'Fecha de Nacimiento',
@@ -93,17 +91,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 validator: (value) =>
                     value != null && value.isEmpty ? 'Campo requerido' : null,
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   ElevatedButton(
-                    onPressed: () {
-                      // Implementar la lógica de actualización
+                    onPressed: () async {
+                      try {
+                        UserProfile updatedProfile = UserProfile(
+                          firstName: firstNameController.text,
+                          lastName: lastNameController.text,
+                          birthdate:
+                              DateTime.tryParse(birthDateController.text),
+                          // No actualizamos el correo ya que está bloqueado
+                        );
+                        bool success =
+                            await UserService().updateProfile(updatedProfile);
+                        if (success) {
+                          // Mostrar mensaje de éxito
+                        } else {
+                          // Mostrar mensaje de error
+                        }
+                      } catch (e) {
+                        // Mostrar mensaje de error
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
-                      backgroundColor: AppColors.primary500, // foreground
+                      backgroundColor: AppColors.primary500,
                     ),
                     child: const Text('Actualizar'),
                   ),
@@ -133,7 +148,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         const CircleAvatar(
           radius: 60,
           backgroundImage: NetworkImage(
-              'https://www.gravatar.com/avatar/2c7d99fe281ecd3bcd65ab915bac6dd5?s=250'), // Cambia a la imagen que quieras mostrar
+              'https://www.gravatar.com/avatar/2c7d99fe281ecd3bcd65ab915bac6dd5?s=250'),
         ),
         Positioned(
           right: 0,
@@ -143,9 +158,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             radius: 20,
             child: IconButton(
               icon: const Icon(Icons.edit, size: 20),
-              onPressed: () {
-                // Aquí puedes implementar la lógica para cambiar la foto de perfil
-              },
+              onPressed: () {},
             ),
           ),
         ),

@@ -14,15 +14,11 @@ class AuthService {
 
       if (response.statusCode == 201) {
         await _saveToken(response.data['token']);
-        print('Login exitoso');
         return true;
       } else {
-        // Error durante el login
-        print('Error during login: ${response.statusCode}');
         return false;
       }
     } catch (e) {
-      print('Error during login: $e');
       return false;
     }
   }
@@ -59,24 +55,15 @@ class AuthService {
       if (response.statusCode == 201) {
         if (response.data['token'] != null) {
           await _saveToken(response.data['token']);
-          print('Registro exitoso y token guardado');
           return true;
         } else {
-          print('Registro exitoso pero sin token');
           return false;
         }
       } else {
-        print('Error during registration: ${response.statusCode}');
         return false;
       }
-    } on DioError catch (e) {
-      print('Error during registration: $e');
-      if (e.response != null) {
-        print('Error sending request!');
-        print('STATUS: ${e.response?.statusCode}');
-        print('DATA: ${e.response?.data}');
-        print('HEADERS: ${e.response?.headers}');
-      }
+    } on DioException catch (e) {
+      if (e.response != null) {}
       return false;
     }
   }
