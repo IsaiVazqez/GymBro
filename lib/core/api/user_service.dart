@@ -35,9 +35,7 @@ class UserService {
       "firstName": userProfile.firstName,
       "lastName": userProfile.lastName,
     };
-
-    print(
-        'Datos enviados para actualización: $data'); // Imprimir los datos enviados
+    // Imprimir los datos enviados
 
     try {
       final response = await _dio.patch(

@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:gymbro/common/constants/colors.dart';
 import 'package:gymbro/common/models/user_mode.dart';
@@ -125,17 +127,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             await UserService().updateProfile(updatedProfile);
                         if (success) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content:
-                                  const Text('Perfil actualizado con éxito'),
+                            const SnackBar(
+                              content: Text('Perfil actualizado con éxito'),
                               backgroundColor: Colors.green,
                             ),
                           );
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content:
-                                  const Text('Error al actualizar el perfil'),
+                            const SnackBar(
+                              content: Text('Error al actualizar el perfil'),
                               backgroundColor: Colors.red,
                             ),
                           );

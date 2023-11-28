@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gymbro/common/constants/colors.dart';
-import 'package:gymbro/common/models/plan_model.dart';
+import 'package:gymbro/common/models/subcriptions_model.dart';
 
-class PlansCard extends StatelessWidget {
-  final PlanElement plan;
+class PlanCard extends StatelessWidget {
+  final Subcriptions subscription;
 
-  const PlansCard({Key? key, required this.plan}) : super(key: key);
+  const PlanCard({Key? key, required this.subscription}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class PlansCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              plan.title ?? 'Nombre del Plan',
+              subscription.plan!.title ?? 'Nombre del Plan',
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
@@ -37,38 +37,35 @@ class PlansCard extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              plan.description ?? 'Descripción del Plan',
+              subscription.plan!.description ?? 'Descripción del Plan',
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 14,
               ),
             ),
             const SizedBox(height: 8),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Duración: ${plan.duration ?? 'No Disponible'} Hora(s)',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                      ),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Duración: ${subscription.plan!.duration ?? 'No Disponible'} Hora(s)',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
                     ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'Precio: \$${plan.price ?? 'No Disponible'}',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                      ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Precio: \$${subscription.plan!.price ?? 'No Disponible'}',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
                     ),
-                  ],
-                ),
-              ],
-            ),
+                  ),
+                ],
+              ),
+            ]),
           ],
         ),
       ),

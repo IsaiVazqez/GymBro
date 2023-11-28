@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gymbro/common/widgets/bottom_navigation_bar/bloc/bloc/navigation_bloc.dart';
 import 'package:gymbro/common/widgets/bottom_navigation_bar/presentation/main_widget.dart';
-import 'package:gymbro/core/api/gym_service.dart';
 import 'package:gymbro/features/home_screen/bloc/gym_bloc.dart';
 import 'package:gymbro/features/login_screen/bloc/bloc/login_bloc.dart';
 import 'package:gymbro/features/login_screen/presentation/views/login_screen.dart';
-import 'package:gymbro/features/plans_screen/bloc/subscribed_plan_bloc.dart';
 import 'package:gymbro/features/splash_screen/bloc/splash_bloc.dart';
 import 'package:gymbro/features/splash_screen/bloc/splash_event.dart';
 import 'package:gymbro/features/splash_screen/presentation/views/splash_screen.dart';
@@ -27,8 +25,6 @@ class MyApp extends StatelessWidget {
             create: (context) => SplashBloc()..add(InitializeSplashScreen())),
         BlocProvider<NavigationBloc>(create: (context) => NavigationBloc()),
         BlocProvider<GymBloc>(create: (context) => GymBloc()..add(LoadGyms())),
-        BlocProvider<SubscribedPlansBloc>(
-            create: (context) => SubscribedPlansBloc(GymService())),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

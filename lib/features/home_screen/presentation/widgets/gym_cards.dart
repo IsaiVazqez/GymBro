@@ -46,7 +46,6 @@ class GymCard extends StatelessWidget {
                                     color: Colors.white,
                                     fontSize: 18)),
                           ),
-                          _buildStarRating(4.5), // Ejemplo de calificación
                         ],
                       ),
                       Text(
@@ -73,18 +72,6 @@ class GymCard extends StatelessWidget {
           ]),
         ),
       ),
-    );
-  }
-
-  Widget _buildStarRating(double calificacion) {
-    return Row(
-      children: List.generate(5, (index) {
-        return Icon(
-          index < calificacion ? Icons.star : Icons.star_border,
-          color: Colors.white,
-          size: 18,
-        );
-      }),
     );
   }
 }
