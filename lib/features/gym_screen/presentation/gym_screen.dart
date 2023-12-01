@@ -70,66 +70,79 @@ class _GymScreenState extends State<GymScreen> {
             children: [
               if (equipment != null && equipment!.isNotEmpty)
                 if (plan != null) const SizedBox(height: 8),
-              Text(
-                plan!.name ?? 'Nombre del Gimnasio',
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 22,
-                  color: AppColors.lightGreen,
+              Card(
+                color: AppColors.darkGraySoft,
+                margin: const EdgeInsets.symmetric(vertical: 10),
+                elevation: 4,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15),
+                  side: const BorderSide(color: AppColors.lightGreen, width: 1),
+                ),
+                child: Container(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        plan!.name ?? 'Nombre del Gimnasio',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.lightGreen,
+                          fontSize: 18,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            const TextSpan(
+                              text: 'Dirección: ',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                                color: AppColors.lightGreen,
+                              ),
+                            ),
+                            TextSpan(
+                              text: plan!.address != null
+                                  ? ' Calle ${plan!.address!.street}, Número ${plan!.address!.building}, C.P ${plan!.address!.zip}, ${plan!.address!.neighborhood}, ${plan!.address!.city}, ${plan!.address!.state}, ${plan!.address!.country}'
+                                  : ' No Disponible',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.normal,
+                                fontSize: 18,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            const TextSpan(
+                              text: 'Número: ',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                                color: AppColors.lightGreen,
+                              ),
+                            ),
+                            TextSpan(
+                              text: plan!.phone ?? ' No Disponible',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.normal,
+                                fontSize: 18,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              const SizedBox(height: 8),
-              if (plan != null && plan!.address != null)
-                RichText(
-                  text: TextSpan(
-                    children: [
-                      const TextSpan(
-                        text: 'Dirección: ',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                          color: AppColors
-                              .lightGreen, // Color y estilo para "Dirección"
-                        ),
-                      ),
-                      TextSpan(
-                        text:
-                            ' Calle ${plan!.address!.street}, Número ${plan!.address!.building}, C.P ${plan!.address!.zip}, ${plan!.address!.neighborhood}, ${plan!.address!.city}, ${plan!.address!.state}, ${plan!.address!.country}',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.normal,
-                          fontSize: 18,
-                          color: Colors
-                              .white, // Color para el resto de la dirección
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              const SizedBox(height: 8),
-              if (plan != null)
-                RichText(
-                  text: TextSpan(
-                    children: [
-                      const TextSpan(
-                        text: 'Número: ',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                          color: AppColors
-                              .lightGreen, // Color específico para "Número"
-                        ),
-                      ),
-                      TextSpan(
-                        text: plan!.phone ?? 'No Disponible',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.normal,
-                          fontSize: 18,
-                          color: Colors.white, // Color para el resto del texto
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
               const SizedBox(height: 16),
               (equipment == null || equipment!.isEmpty)
                   ? SizedBox.shrink() // No muestra nada si no hay imágenes
