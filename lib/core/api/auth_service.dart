@@ -28,15 +28,13 @@ class AuthService {
     await prefs.setString('token', token);
   }
 
-  Future<bool> register({
+  Future<String> register({
     required String email,
     required String phone,
     required String birthdate,
     required String firstName,
     required String lastName,
     required String password,
-    String? createdAt,
-    String? updatedAt,
   }) async {
     try {
       final response = await _dio.post(
@@ -51,20 +49,19 @@ class AuthService {
           "lastName": lastName,
         },
       );
-
+      print(response.data);
       if (response.statusCode == 201) {
-        if (response.data['token'] != null) {
-          await _saveToken(response.data['token']);
-          return true;
+        final data = response.data;
+        if (data['message'] != null) {
+          return data['message'];
         } else {
-          return false;
+          return 'Registro exitoso. Por favor, verifica tu correo electrónico.';
         }
       } else {
-        return false;
+        return 'Error durante el registro. Inténtalo de nuevo.';
       }
     } on DioException catch (e) {
-      if (e.response != null) {}
-      return false;
+      return 'Error de conexión: ${e.message}';
     }
   }
 }

@@ -1,107 +1,198 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gymbro/common/constants/colors.dart';
+import 'package:gymbro/common/models/images_model.dart';
+import 'package:gymbro/common/models/plan_model.dart';
 import 'package:gymbro/common/widgets/app_bar/presentation/custom_appbar.dart';
+import 'package:gymbro/core/api/gym_service.dart';
 import 'package:gymbro/features/gym_screen/presentation/widgets/plan_card.dart';
-import 'package:gymbro/features/home_screen/bloc/gym_bloc.dart';
 
-class GymScreen extends StatelessWidget {
+class GymScreen extends StatefulWidget {
   final String gymUuid;
 
   const GymScreen({Key? key, required this.gymUuid}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
+  _GymScreenState createState() => _GymScreenState();
+}
+
+class _GymScreenState extends State<GymScreen> {
+  Plan? plan;
+  List<Images>? equipment;
+  String? error;
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    loadGymData();
+  }
+
+  Future<void> loadGymData() async {
+    try {
+      final GymService gymService = GymService();
+      plan = await gymService.fetchGymPlans(widget.gymUuid);
+      equipment = await gymService.fetchGymEquipment(widget.gymUuid);
+    } catch (e) {
+      error = e.toString();
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    context.read<GymBloc>().add(LoadGymPlansEvent(gymUuid));
+    if (isLoading) {
+      return const Scaffold(
+        backgroundColor: AppColors.background,
+        appBar: CustomAppBar(title: ''),
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    if (error != null) {
+      return Center(child: Text(error!));
+    }
+
+    final plans = plan?.plans ?? [];
 
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: const CustomAppBar(
-        title: '',
-      ),
-      body: BlocBuilder<GymBloc, GymState>(
-        builder: (context, state) {
-          switch (state.runtimeType) {
-            case GymPlansLoading:
-              return const Center(child: CircularProgressIndicator());
-            case GymPlansLoaded:
-              final plan = (state as GymPlansLoaded).plan;
-              final plans = state.plan.plans;
-              return SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+      appBar: const CustomAppBar(title: ''),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (equipment != null && equipment!.isNotEmpty)
+                if (plan != null) const SizedBox(height: 8),
+              Text(
+                plan!.name ?? 'Nombre del Gimnasio',
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22,
+                  color: AppColors.lightGreen,
+                ),
+              ),
+              const SizedBox(height: 8),
+              if (plan != null && plan!.address != null)
+                RichText(
+                  text: TextSpan(
                     children: [
-                      Text(
-                        plan.name ?? 'Nombre del Gimnasio',
-                        style: AppTextStyles.title,
-                      ),
-                      const SizedBox(height: 8),
-                      RichText(
-                        text: TextSpan(
-                          text: 'Dirección: ',
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                              color: Colors.white),
-                          children: <TextSpan>[
-                            TextSpan(
-                              // Aquí construyes la cadena de texto que representa la dirección completa.
-                              text: plan.address != null
-                                  ? ' Calle ${plan.address!.street}, Número ${plan.address!.building}, C.P ${plan.address!.zip}, ${plan.address!.neighborhood}, ${plan.address!.city}, ${plan.address!.state}, ${plan.address!.country}'
-                                  : 'No Disponible',
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.normal),
-                            ),
-                          ],
+                      const TextSpan(
+                        text: 'Dirección: ',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                          color: AppColors
+                              .lightGreen, // Color y estilo para "Dirección"
                         ),
                       ),
-                      const SizedBox(height: 8),
-                      RichText(
-                        text: TextSpan(
-                          text: 'Número: ',
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                              color: Colors.white),
-                          children: <TextSpan>[
-                            TextSpan(
-                              text: plan.phone ?? 'No Disponible',
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.normal),
-                            ),
-                          ],
+                      TextSpan(
+                        text:
+                            ' Calle ${plan!.address!.street}, Número ${plan!.address!.building}, C.P ${plan!.address!.zip}, ${plan!.address!.neighborhood}, ${plan!.address!.city}, ${plan!.address!.state}, ${plan!.address!.country}',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.normal,
+                          fontSize: 18,
+                          color: Colors
+                              .white, // Color para el resto de la dirección
                         ),
                       ),
-                      const SizedBox(height: 16),
-                      const Text(
-                        'Planes Disponibles',
-                        style: AppTextStyles.title,
-                      ),
-                      const SizedBox(height: 8),
-                      if (plans!.isEmpty)
-                        const Text(
-                          'Este gimnasio no tiene planes disponibles.',
-                          style: TextStyle(color: Colors.white),
-                        )
-                      else
-                        for (final plan in plans) PlanCard(plan: plan),
                     ],
                   ),
                 ),
-              );
-            // Manejo de otros estados...
-            case GymPlansError:
-              return Center(child: Text((state as GymPlansError).message));
-            default:
-              return const Center(
-                  child: Text(
-                'Algo salió mal',
-                style: TextStyle(color: Colors.white),
-              ));
-          }
-        },
+              const SizedBox(height: 8),
+              if (plan != null)
+                RichText(
+                  text: TextSpan(
+                    children: [
+                      const TextSpan(
+                        text: 'Número: ',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                          color: AppColors
+                              .lightGreen, // Color específico para "Número"
+                        ),
+                      ),
+                      TextSpan(
+                        text: plan!.phone ?? 'No Disponible',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.normal,
+                          fontSize: 18,
+                          color: Colors.white, // Color para el resto del texto
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              const SizedBox(height: 16),
+              (equipment == null || equipment!.isEmpty)
+                  ? SizedBox.shrink() // No muestra nada si no hay imágenes
+                  : CarouselSlider(
+                      options: CarouselOptions(
+                        height: 180.0,
+                        enlargeCenterPage: true,
+                        autoPlay: true,
+                        autoPlayInterval: const Duration(seconds: 3),
+                        aspectRatio: 16 / 9,
+                        viewportFraction: 0.8,
+                      ),
+                      items: equipment!.map((imageItem) {
+                        return Builder(
+                          builder: (BuildContext context) {
+                            return Container(
+                              width: MediaQuery.of(context).size.width,
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 5.0),
+                              decoration: BoxDecoration(
+                                color: Colors.amber,
+                                borderRadius: BorderRadius.circular(15),
+                                boxShadow: const [
+                                  BoxShadow(
+                                    color: Colors.black45,
+                                    blurRadius: 5.0,
+                                    spreadRadius: 1.0,
+                                    offset: Offset(0.0, 2.0),
+                                  ),
+                                ],
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(15),
+                                child: Image.network(
+                                  'https://gymbro-images.s3.us-east-2.amazonaws.com/${imageItem.image}',
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      }).toList(),
+                    ),
+              const SizedBox(height: 16),
+              const Text(
+                'Planes Disponibles',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22,
+                  color: AppColors.lightGreen, // Color específico para "Número"
+                ),
+              ),
+              const SizedBox(height: 8),
+              if (plans.isEmpty)
+                const Text(
+                  'Este gimnasio no tiene planes disponibles.',
+                  style: TextStyle(color: Colors.white),
+                )
+              else
+                for (final planItem in plans) PlanCard(plan: planItem),
+            ],
+          ),
+        ),
       ),
     );
   }

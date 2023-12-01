@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:gymbro/common/constants/api.dart';
 import 'package:gymbro/common/models/gym_model.dart';
+import 'package:gymbro/common/models/images_model.dart';
 import 'package:gymbro/common/models/plan_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -36,6 +37,20 @@ class GymService {
       // ignore: avoid_print
       print(e);
       throw Exception('Error fetching plan');
+    }
+  }
+
+  Future<List<Images>> fetchGymEquipment(String gymUuid) async {
+    try {
+      final response = await _dio.get('/branches/$gymUuid/equipment');
+      if (response.statusCode == 200) {
+        final List<dynamic> equipmentJson = response.data;
+        return equipmentJson.map((json) => Images.fromJson(json)).toList();
+      } else {
+        throw Exception('Failed to load equipment');
+      }
+    } catch (e) {
+      throw Exception('Error fetching equipment');
     }
   }
 

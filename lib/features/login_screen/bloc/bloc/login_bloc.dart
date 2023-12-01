@@ -17,11 +17,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<ShowDefaultViewEvent>(_onShowDefaultViewEvent);
     on<RegisterSubmitted>(_onRegisterSubmitted);
   }
+
   void _onRegisterSubmitted(
       RegisterSubmitted event, Emitter<LoginState> emit) async {
     emit(LoadingState());
     try {
-      final success = await _authService.register(
+      final registrationMessage = await _authService.register(
         email: event.email,
         phone: event.phone,
         birthdate: event.birthdate,
@@ -30,18 +31,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         password: event.password,
       );
 
-      // Retrasar la emisión del estado de éxito o error
-      await Future.delayed(const Duration(seconds: 2), () {
-        if (success) {
-          emit(RegisterSuccessState());
+      await Future.delayed(const Duration(seconds: 1), () {
+        if (registrationMessage == 'Account created successfully') {
         } else {
-          emit(RegisterErrorState(errorMessage: 'Error en el registro'));
+          emit(RegisterSuccessState(registrationMessage: registrationMessage));
         }
       });
     } catch (error) {
-      await Future.delayed(const Duration(seconds: 2), () {
-        emit(RegisterErrorState(errorMessage: 'Error en el registro: $error'));
-      });
+      await Future.delayed(const Duration(seconds: 3), () {});
     }
   }
 

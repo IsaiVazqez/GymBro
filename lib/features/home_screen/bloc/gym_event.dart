@@ -20,3 +20,9 @@ class LoadGymPlansEvent extends GymEvent {
   @override
   List<Object?> get props => [gymUuid];
 }
+
+class LoadGymEquipmentEvent extends GymEvent {
+  final String gymUuid;
+
+  LoadGymEquipmentEvent(this.gymUuid);
+}

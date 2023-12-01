@@ -44,8 +44,9 @@ class HomeScreen extends StatelessWidget {
                               onTap: (gymUuid) {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (context) =>
-                                        GymScreen(gymUuid: gym.uuid!),
+                                    builder: (context) => GymScreen(
+                                      gymUuid: gym.uuid!,
+                                    ),
                                   ),
                                 );
                               },

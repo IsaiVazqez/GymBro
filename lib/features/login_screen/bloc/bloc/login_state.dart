@@ -19,10 +19,15 @@ class LoginErrorState extends LoginState {
   LoginErrorState(this.error);
 }
 
-class RegisterSuccessState extends LoginState {}
+class RegisterSuccessState extends LoginState {
+  final String registrationMessage;
+
+  RegisterSuccessState(
+      {this.registrationMessage = 'Account creaded successfully'});
+}
 
 class RegisterErrorState extends LoginState {
   final String errorMessage;
 
-  RegisterErrorState({required this.errorMessage});
+  RegisterErrorState({this.errorMessage = 'Error en el registro.'});
 }

@@ -57,3 +57,17 @@ class GymError extends GymState {
   @override
   List<Object?> get props => [message];
 }
+
+class GymEquipmentLoading extends GymState {}
+
+class GymEquipmentLoaded extends GymState {
+  final List<Images> equipment;
+
+  GymEquipmentLoaded(this.equipment);
+}
+
+class GymEquipmentError extends GymState {
+  final String message;
+
+  GymEquipmentError(this.message);
+}

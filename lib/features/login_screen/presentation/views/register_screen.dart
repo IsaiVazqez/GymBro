@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gymbro/common/constants/colors.dart';
 import 'package:gymbro/common/constants/validators.dart';
-import 'package:gymbro/common/widgets/bottom_navigation_bar/presentation/main_widget.dart';
 import 'package:gymbro/features/login_screen/bloc/bloc/login_bloc.dart';
 import 'package:gymbro/features/login_screen/presentation/widgets/text_field.dart';
 
@@ -18,13 +17,8 @@ class RegisterScreen extends StatelessWidget {
           _showRegistrationDialog(
                   context: context,
                   title: 'Registro Completado',
-                  message: 'Tu registro se ha completado exitosamente.')
-              .then((_) {
-            // Navegar a la pantalla de inicio después de cerrar el diálogo
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => MainScreen()),
-            );
-          });
+                  message: state.registrationMessage)
+              .then((_) {});
         } else if (state is RegisterErrorState) {
           _showRegistrationDialog(
               context: context,
