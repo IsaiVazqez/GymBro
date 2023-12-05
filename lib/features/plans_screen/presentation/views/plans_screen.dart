@@ -5,6 +5,7 @@ import 'package:gymbro/common/constants/colors.dart';
 import 'package:gymbro/common/models/subcriptions_model.dart';
 import 'package:gymbro/common/widgets/app_bar/presentation/custom_appbar.dart';
 import 'package:gymbro/core/api/plans_service.dart';
+import 'package:gymbro/features/login_screen/presentation/views/login_screen.dart';
 import 'package:gymbro/features/plans_screen/presentation/widgets/plans.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -69,16 +70,45 @@ class _SubscribedPlansScreenState extends State<SubscribedPlansScreen> {
               },
             );
           } else {
-            return const Center(
-              child: Card(
-                color: AppColors.darkGraySoft,
-                child: Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: Text(
-                    'Necesitas iniciar sesión para tener planes suscritos.',
+            return Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  const Icon(
+                    Icons.error_outline,
+                    size: 60,
+                    color: Colors.red,
+                  ),
+                  const SizedBox(height: 16),
+                  const Text(
+                    'Necesitas iniciar sesión',
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                  ),
+                  const SizedBox(height: 8),
+                  const Text(
+                    'Por favor, inicia sesión para tener una lista de tus planes suscritos.',
+                    textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.white),
                   ),
-                ),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                            builder: (context) => const LoginScreen()),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: AppColors.primary500,
+                    ),
+                    child: const Text('Inicio de Sesión'),
+                  ),
+                ],
               ),
             );
           }

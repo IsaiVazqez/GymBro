@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gymbro/common/constants/colors.dart';
+import 'package:gymbro/features/profile_screen/presentation/presentation/views/profile_screen.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
@@ -29,10 +30,20 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       actions: <Widget>[
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: SvgPicture.asset(
-            'assets/usuario.svg',
-            width: 24,
-            height: 24,
+          child: InkWell(
+            onTap: () {
+              // Navegar a la pantalla de perfil
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ProfileScreen()),
+              );
+            },
+            child: SvgPicture.asset(
+              'assets/usuario.svg',
+              color: AppColors.primary500,
+              width: 24,
+              height: 24,
+            ),
           ),
         ),
       ],

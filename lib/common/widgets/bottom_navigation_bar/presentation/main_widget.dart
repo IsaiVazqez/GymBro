@@ -4,7 +4,7 @@ import 'package:gymbro/common/constants/colors.dart';
 import 'package:gymbro/common/widgets/bottom_navigation_bar/bloc/bloc/navigation_bloc.dart';
 import 'package:gymbro/features/plans_screen/presentation/views/plans_screen.dart';
 import 'package:gymbro/features/home_screen/presentation/views/home_screen.dart';
-import 'package:gymbro/features/profile_screen/presentation/presentation/views/profile_screen.dart';
+import 'package:gymbro/features/qr_screen/presentation/views/qr_screen.dart';
 
 class MainPage extends StatelessWidget {
   const MainPage({super.key});
@@ -21,8 +21,8 @@ class MainPage extends StatelessWidget {
 class MainScreen extends StatelessWidget {
   final List<Widget> _children = [
     const HomeScreen(),
+    const QRScreen(),
     const SubscribedPlansScreen(),
-    const ProfileScreen(),
   ];
 
   MainScreen({super.key});
@@ -33,42 +33,49 @@ class MainScreen extends StatelessWidget {
       builder: (context, state) {
         return Scaffold(
           body: _children[state],
-          bottomNavigationBar: Container(
-            decoration: const BoxDecoration(
-              border: Border(
-                top: BorderSide(color: AppColors.primary500, width: 1.0),
+          floatingActionButton: ClipOval(
+            child: Container(
+              color: AppColors.primary500, // Color de fondo del botón
+              child: FloatingActionButton(
+                onPressed: () {
+                  BlocProvider.of<NavigationBloc>(context).add(
+                      ShowProfileEvent()); // Reemplazar con el evento adecuado para QR
+                },
+                child: const Icon(Icons.qr_code),
+                backgroundColor: AppColors.primary500,
               ),
             ),
-            child: BottomNavigationBar(
-              backgroundColor: AppColors.background,
-              selectedItemColor: AppColors.primary500,
-              unselectedItemColor: Colors.white70,
-              currentIndex: state,
-              items: const [
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.home),
-                  label: 'Inicio',
+          ),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
+          bottomNavigationBar: BottomAppBar(
+            elevation: 0,
+            shape: const CircularNotchedRectangle(),
+            notchMargin: 8.0,
+            color: AppColors.background,
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                IconButton(
+                  icon: const Icon(Icons.home),
+                  color: state == 0 ? AppColors.primary500 : Colors.white70,
+                  onPressed: () {
+                    BlocProvider.of<NavigationBloc>(context)
+                        .add(ShowHomeEvent());
+                  },
                 ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.sports_gymnastics),
-                  label: 'Mis Planes',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.person),
-                  label: 'Perfil',
+                const SizedBox(
+                    width: 48), // Espacio para el FloatingActionButton
+                IconButton(
+                  icon: const Icon(Icons.sports_gymnastics),
+                  color: state == 2 ? AppColors.primary500 : Colors.white70,
+                  onPressed: () {
+                    BlocProvider.of<NavigationBloc>(context)
+                        .add(ShowSubscribedPlansEvent());
+                  },
                 ),
               ],
-              onTap: (index) {
-                if (index == 0) {
-                  BlocProvider.of<NavigationBloc>(context).add(ShowHomeEvent());
-                } else if (index == 1) {
-                  BlocProvider.of<NavigationBloc>(context)
-                      .add(ShowProfileEvent());
-                } else if (index == 2) {
-                  BlocProvider.of<NavigationBloc>(context)
-                      .add(ShowSubscribedPlansEvent());
-                }
-              },
             ),
           ),
         );
@@ -76,3 +83,61 @@ class MainScreen extends StatelessWidget {
     );
   }
 }
+
+
+/* class MainScreen extends StatelessWidget {
+  final List<Widget> _children = [
+    const HomeScreen(),
+    const QRScreen(),
+    const SubscribedPlansScreen(),
+  ];
+
+  MainScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<NavigationBloc, int>(
+      builder: (context, state) {
+        return Scaffold(
+          body: _children[state],
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              BlocProvider.of<NavigationBloc>(context)
+                  .add(ShowProfileEvent()); // Reemplazar con el evento adecuado para QR
+            },
+            child: const Icon(Icons.qr_code),
+            backgroundColor: AppColors.primary500,
+          ),
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+          bottomNavigationBar: BottomAppBar(
+            shape: const CircularNotchedRectangle(),
+            notchMargin: 8.0,
+            color: AppColors.background,
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                IconButton(
+                  icon: const Icon(Icons.home),
+                  color: state == 0 ? AppColors.primary500 : Colors.white70,
+                  onPressed: () {
+                    BlocProvider.of<NavigationBloc>(context).add(ShowHomeEvent());
+                  },
+                ),
+                const SizedBox(width: 48), // Espacio para el FloatingActionButton
+                IconButton(
+                  icon: const Icon(Icons.sports_gymnastics),
+                  color: state == 2 ? AppColors.primary500 : Colors.white70,
+                  onPressed: () {
+                    BlocProvider.of<NavigationBloc>(context).add(ShowSubscribedPlansEvent());
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+ */
